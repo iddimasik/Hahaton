@@ -1,4 +1,4 @@
-CREATE TABLE users (
+CREATE TABLE Users (
     id SERIAL PRIMARY KEY,
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
@@ -10,12 +10,12 @@ CREATE TABLE users (
     password VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE regions (
+CREATE TABLE Regions (
     id SERIAL PRIMARY KEY,
     region_name VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE pollution_Places (
+CREATE TABLE Pollution_Places (
     id SERIAL PRIMARY KEY,
     problem_title VARCHAR(255) NOT NULL,
     problem_text TEXT NOT NULL,
@@ -28,7 +28,7 @@ CREATE TABLE pollution_Places (
     FOREIGN KEY (user_id) REFERENCES Users(id)
 );
 
-CREATE TABLE problem_Reviews (
+CREATE TABLE Problem_Reviews (
     id SERIAL PRIMARY KEY,
     review_author VARCHAR(100) NOT NULL,
     review_text TEXT NOT NULL,
@@ -40,7 +40,7 @@ CREATE TABLE problem_Reviews (
     FOREIGN KEY (user_id) REFERENCES Users(id)
 );
 
-CREATE TABLE images (
+CREATE TABLE Images (
     id SERIAL PRIMARY KEY,
     image_data BYTEA NOT NULL,
     pollution_place_id INT NOT NULL,

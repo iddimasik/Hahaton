@@ -10,10 +10,10 @@ CREATE TABLE Users (
     last_name VARCHAR(100) NOT NULL,
     email VARCHAR(255) NOT NULL,
     user_status UserStatus NOT NULL,
-    access_level VARCHAR(20) NOT NULL DEFAULT 'User', -- Теперь это текстовое поле
+    access_level VARCHAR(20) NOT NULL DEFAULT 'User', 
     phone_number VARCHAR(20),
     login VARCHAR(50) NOT NULL,
-    password VARCHAR(100) NOT NULL -- предполагается, что пароль будет храниться в зашифрованном виде
+    password VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE Regions (

@@ -4,12 +4,15 @@ CREATE TYPE ProblemStatus AS ENUM ('В обработке модерацией',
 
 CREATE TYPE ReviewStatus AS ENUM ('Опубликован', 'Снят с публикации');
 
+CREATE TYPE AccessLevel AS ENUM ('User', 'Moderator');
+
 CREATE TABLE Users (
     id SERIAL PRIMARY KEY,
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
     email VARCHAR(255) NOT NULL,
     user_status UserStatus NOT NULL,
+    access_level AccessLevel NOT NULL DEFAULT 'User',
     phone_number VARCHAR(20)
 );
 

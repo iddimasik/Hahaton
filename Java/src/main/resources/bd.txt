@@ -25,7 +25,6 @@ CREATE TABLE Pollution_Places (
     id SERIAL PRIMARY KEY,
     problem_title VARCHAR(255) NOT NULL,
     problem_text TEXT NOT NULL,
-    photo_gallery TEXT,
     problem_status ProblemStatus NOT NULL,
     region_id INT NOT NULL,
     user_id INT NOT NULL,
@@ -45,4 +44,11 @@ CREATE TABLE Problem_Reviews (
     user_id INT NOT NULL,
     FOREIGN KEY (pollution_place_id) REFERENCES Pollution_Places(id),
     FOREIGN KEY (user_id) REFERENCES Users(id)
+);
+
+CREATE TABLE Images (
+    id SERIAL PRIMARY KEY,
+    image_data BYTEA NOT NULL,
+    pollution_place_id INT NOT NULL,
+    FOREIGN KEY (pollution_place_id) REFERENCES Pollution_Places(id)
 );

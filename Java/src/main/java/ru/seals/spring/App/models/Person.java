@@ -1,47 +1,41 @@
 package ru.seals.spring.App.models;
 
+import ru.seals.spring.App.util.UserStatus;
+
 import javax.persistence.*;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "Person")
+@Table(name = "users")
 public class Person {
 
     @Id
-    @Column(name = "id_person")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotEmpty(message = "Имя не должно быть пустым")
-    @Size(min = 2, max = 100, message = "Имя должно быть от 2 до 100 символов длинной")
-    @Column(name = "username")
-    private String username;
+    @Column(name = "login")
+    private String login;
 
-    @Min(value = 1900, message = "Год рождения должен быть больше, чем 1900")
-    @Column(name = "year_of_birth")
-    private int yearOfBirth;
+    @Column(name = "first_name")
+    private String firstName;
 
-    @Column(name = "password")
-    private String password;
+    @Column(name = "last_name")
+    private String lastName;
 
     @Column(name = "email")
     private String email;
 
+    @Column(name = "password")
+    private String password;
+
+    @Column(name = "user_status")
+    private String userStatus;
+
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
     @Column(name = "role")
     private String role;
-
-    public Person() {}
-
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public int getId() {
         return id;
@@ -51,28 +45,44 @@ public class Person {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public int getYearOfBirth() {
-        return yearOfBirth;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setYearOfBirth(int yearOfBirth) {
-        this.yearOfBirth = yearOfBirth;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    public String getPassword() {
-        return password;
+    public String getEmail() {
+        return email;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getUserStatus() {
+        return userStatus;
+    }
+
+    public void setUserStatus(String userStatus) {
+        this.userStatus = userStatus;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getRole() {
@@ -83,13 +93,19 @@ public class Person {
         this.role = role;
     }
 
-    @Override
-    public String toString() {
-        return "Person{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", yearOfBirth=" + yearOfBirth +
-                ", password='" + password + '\'' +
-                '}';
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
     }
 }

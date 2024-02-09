@@ -11,7 +11,6 @@ import java.util.Collections;
 public class PersonDetails implements UserDetails {
 
     private final Person person;
-
     public PersonDetails(Person person) {
         this.person = person;
     }
@@ -28,7 +27,7 @@ public class PersonDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.person.getUsername();
+        return this.person.getLogin();
     }
 
     @Override

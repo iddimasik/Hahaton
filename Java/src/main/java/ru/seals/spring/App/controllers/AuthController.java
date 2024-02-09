@@ -2,6 +2,7 @@ package ru.seals.spring.App.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -10,8 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import ru.seals.spring.App.models.Person;
 import ru.seals.spring.App.services.RegistrationService;
 import ru.seals.spring.App.util.PersonValidator;
+import ru.seals.spring.App.util.UserStatus;
 
 import javax.validation.Valid;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/auth")
@@ -32,7 +37,17 @@ public class AuthController {
     }
 
     @GetMapping("/registration")
-    public String registrationPage(@ModelAttribute("person") Person person) {
+    public String registrationPage(@ModelAttribute("person") Person person, Model model) {
+        // Получаем массив значений перечисления UserStatus
+        UserStatus[] statuses = UserStatus.values();
+        // Преобразуем массив в список строк с помощью стримов
+        List<String> statusList = Arrays.stream(statuses)
+                .map(Enum::name)
+                .map(status -> status.replace("_", " "))
+                .toList(); // Собираем результаты в список
+
+
+        model.addAttribute("statusList",statusList);
         return "auth/registration";
     }
 

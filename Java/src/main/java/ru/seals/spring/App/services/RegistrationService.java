@@ -16,6 +16,7 @@ public class RegistrationService {
     @Autowired
     public RegistrationService(PeopleRepository peopleRepository, PasswordEncoder passwordEncoder) {
         this.peopleRepository = peopleRepository;
+
         this.passwordEncoder = passwordEncoder;
     }
 

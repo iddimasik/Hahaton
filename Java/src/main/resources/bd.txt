@@ -1,15 +1,9 @@
-CREATE TYPE UserStatus AS ENUM ('Местный житель', 'Турист', 'Экоактивист', 'Сотрудник МСУ', 'Оператор раздельного сбора мусора');
-
-CREATE TYPE ProblemStatus AS ENUM ('В обработке модерацией', 'Опубликована', 'В работе', 'Проблема решена');
-
-CREATE TYPE ReviewStatus AS ENUM ('Опубликован', 'Снят с публикации');
-
 CREATE TABLE Users (
     id SERIAL PRIMARY KEY,
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
-    email VARCHAR(255) NOT NULL,
-    user_status UserStatus NOT NULL,
+    email VARCHAR(155) NOT NULL,
+    user_status VARCHAR(50) NOT NULL,
     access_level VARCHAR(20) NOT NULL DEFAULT 'ROLE_USER', 
     phone_number VARCHAR(20),
     login VARCHAR(50) NOT NULL,
@@ -25,11 +19,11 @@ CREATE TABLE Pollution_Places (
     id SERIAL PRIMARY KEY,
     problem_title VARCHAR(255) NOT NULL,
     problem_text TEXT NOT NULL,
-    problem_status ProblemStatus NOT NULL,
+    problem_status VARCHAR(100) NOT NULL,
     region_id INT NOT NULL,
     user_id INT NOT NULL,
     creation_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    coordinates_xy VARCHAR(50) NOT NULL,
+    coordinates_xy VARCHAR(100) NOT NULL,
     FOREIGN KEY (region_id) REFERENCES Regions(id),
     FOREIGN KEY (user_id) REFERENCES Users(id)
 );
@@ -39,7 +33,7 @@ CREATE TABLE Problem_Reviews (
     review_author VARCHAR(100) NOT NULL,
     review_text TEXT NOT NULL,
     creation_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    publication_status ReviewStatus NOT NULL,
+    publication_status VARCHAR(50) NOT NULL,
     pollution_place_id INT NOT NULL,
     user_id INT NOT NULL,
     FOREIGN KEY (pollution_place_id) REFERENCES Pollution_Places(id),

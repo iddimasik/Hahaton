@@ -1,8 +1,8 @@
-CREATE TYPE UserStatus AS ENUM ('Местный житель', 'Турист', 'Экоактивист', 'Сотрудник МСУ', 'Оператор раздельного сбора мусора');
+CREATE TYPE UserStatus AS ENUM ('Local Resident', 'Tourist', 'Environmental Activist', 'Local Government Employee', 'Waste Recycling Operator');
 
-CREATE TYPE ProblemStatus AS ENUM ('В обработке модерацией', 'Опубликована', 'В работе', 'Проблема решена');
+CREATE TYPE ProblemStatus AS ENUM ('Under Moderation', 'Published', 'In Progress', 'Problem Solved');
 
-CREATE TYPE ReviewStatus AS ENUM ('Опубликован', 'Снят с публикации');
+CREATE TYPE ReviewStatus AS ENUM ('Published', 'Unpublished');
 
 CREATE TABLE Users (
     id SERIAL PRIMARY KEY,

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Show</title>
+</head>
+<body>
+<p th:text="${employee.getFirst_name() + ', ' + employee.getBirth_year()}">VALUE</p>
+<p th:text="${employee.getEmployee_id()}">VALUE</p>
+
+<a th:href="@{/employee/{id}/edit(id=${employee.getEmployee_id()})}">Edit</a>
+
+<form th:method="DELETE" th:action="@{/employee/{id}(id=${employee.getEmployee_id()})}">
+    <input type="submit" value="Delete"/>
+</form>
+</body>
+</html>

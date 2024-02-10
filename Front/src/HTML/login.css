@@ -152,6 +152,7 @@ width: 100%;
     align-items: center;
     justify-content: center;
     background-color: #151F7E;
+    flex-direction: column;
 }
 
 .box button {
@@ -259,6 +260,18 @@ h2{
 
 .problems-label {
     font-size: 1.3rem;
+    align-items: center;
+}
+.problem-listAdmin {
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 40rem;
+    display: flex;
+    flex-direction: column;
+    gap:0.5rem;
+
+    -ms-overflow-style: none; /* Internet Explorer и Edge */
+    scrollbar-width: none; /* Firefox */
 }
 
 .problem-list {
@@ -340,4 +353,59 @@ h2{
 .status {
     margin-top: 0.5rem;
     color: black;
+}
+
+/**/
+/**/.form-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+.form {
+    width: 400px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.form-group textarea {
+    height: 100px;
+}
+
+.photo-upload label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.photo-upload input[type="file"] {
+    margin-bottom: 10px;
+}
+
+button[type="submit"] {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 3px;
+    cursor: pointer;
 }

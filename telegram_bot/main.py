@@ -41,12 +41,12 @@ def start_message(message):
 
 
 def auth_user(message):
-    if DATA['user_id'] is not None:
-        markup = types.ReplyKeyboardMarkup()
-        status_button = types.KeyboardButton(STATUS_TEXT)
-        new_problem_button = types.KeyboardButton(NEW_PROBLEM_TEXT)
-        markup.row(status_button, new_problem_button)
+    markup = types.ReplyKeyboardMarkup()
+    status_button = types.KeyboardButton(STATUS_TEXT)
+    new_problem_button = types.KeyboardButton(NEW_PROBLEM_TEXT)
+    markup.row(status_button, new_problem_button)
 
+    if DATA['user_id'] is not None:
         bot.send_message(
             message.chat.id,
             'Выберете действие:',
@@ -58,12 +58,6 @@ def auth_user(message):
         user_id = DATABASE.auth(phone_number)
         if user_id:
             DATA['user_id'] = user_id
-
-            markup = types.ReplyKeyboardMarkup()
-            status_button = types.KeyboardButton(STATUS_TEXT)
-            new_problem_button = types.KeyboardButton(NEW_PROBLEM_TEXT)
-            markup.row(status_button, new_problem_button)
-
             bot.send_message(
                 message.chat.id,
                 'Авторизация прошла успешно!'
@@ -98,9 +92,13 @@ def choice(message):
                 f'Координаты: {problem_dict['coordinates_xy']}\n'
                 f'Дата создания: {problem_dict['creation_date']}'
             )
+            markup = types.ReplyKeyboardMarkup()
+            success_button = types.KeyboardButton('Готово')
+            markup.add(success_button)
             bot.send_message(
                 message.chat.id,
-                message_to_chat
+                message_to_chat,
+                reply_markup=markup
             )
         bot.register_next_step_handler(message, auth_user)
 
@@ -153,6 +151,7 @@ def get_text(message):
             message.chat.id,
             'Произошла ошибка. Попробуйте ввести текст снова.'
         )
+        bot.register_next_step_handler(message, get_text)
 
 
 def get_photos(message):
@@ -176,6 +175,13 @@ def get_photos(message):
             reply_markup=markup
         )
         bot.register_next_step_handler(message, get_region)
+    else:
+        bot.send_message(
+            message.chat.id,
+            'Произошла ошибка: Вы ваши данные'
+            ' не являются фотографией. Попробуйте снова.'
+        )
+        bot.register_next_step_handler(message, get_photos)
 
 
 def get_region(message):
@@ -212,10 +218,14 @@ def get_location(message):
         latitude = message.location.latitude
         longitude = message.location.longitude
         DATA['coordinates_xy'] = f'{latitude} {longitude}'
+        markup = types.ReplyKeyboardMarkup()
+        success_button = types.KeyboardButton('Готово')
+        markup.add(success_button)
         bot.send_message(
             message.chat.id,
             'Геопозиция была успешно сохранена! '
-            'Ваш запрос был направлен на рассмотренией администрацией.'
+            'Ваш запрос был направлен на рассмотренией администрацией.',
+            reply_markup=markup
         )
         DATA['creation_date'] = datetime.now()
         DATABASE.insert_data_in_db(DATA)

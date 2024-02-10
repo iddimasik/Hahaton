@@ -3,6 +3,7 @@ from pprint import pprint
 
 from config import db_name, host, password, user
 
+
 try:
     connection = psycopg2.connect(
         host=host,

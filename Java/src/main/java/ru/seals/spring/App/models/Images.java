@@ -15,10 +15,11 @@ public class Images {
     private int id;
 
     @Column(name = "image_data")
-    private byte imageData;
+    private String imageData;
 
-    @Column(name = "pollution_place_id")
-    private int placeId;
+    @ManyToOne
+    @JoinColumn(name = "pollution_place_id", referencedColumnName = "id")
+    private TrashPlace trashPlace;
 
     public int getId() {
         return id;
@@ -27,18 +28,19 @@ public class Images {
         this.id = id;
     }
 
-    public byte getImageData() {
+    public String getImageData() {
         return imageData;
     }
 
-    public void setImageData(byte imageData) {
+    public void setImageData(String imageData) {
         this.imageData = imageData;
     }
 
-    public int getPlaceId() {
-        return placeId;
+    public TrashPlace getTrashPlace() {
+        return trashPlace;
     }
-    public void setPlaceId(int placeId) {
-        this.placeId = placeId;
+
+    public void setTrashPlace(TrashPlace trashPlace) {
+        this.trashPlace = trashPlace;
     }
 }

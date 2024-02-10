@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Hello</title>
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=bde52139-d90a-4c75-9dce-5206156c28bd&lang=ru_RU" type="text/javascript">
+    </script>
 </head>
 <body>
 <form th:action="@{/problem/add}" method="GET">
@@ -11,5 +13,45 @@
 <form th:action="@{/logout}" th:method="post">
     <input type="submit" value="Logout">
 </form>
+<h1>Список проблем</h1>
+<div th:each="problem : ${problems}">
+    <a th:href="@{/problem/{id}(id=${problem.getId()})}"
+       th:text="${ 'Заголовок:' + problem.getTitle()  + 'Описание: ' + problem.getText()}">problem</a>
+
+    <input type="hidden" id="coordinates" th:value="${problems}">
+</div>
+
+
+<h1>Общая карта</h1>
+<div id="map" style="width: 600px; height: 400px"></div>
 </body>
+
+<script type="text/javascript">
+    var coordinates = document.getElementById("coordinates").value;
+    console.log(coordinates)
+    var coordinatesArray = coordinates.split(', ');
+    // Создаем карту Яндекса
+    ymaps.ready(init);
+    var myMap;
+
+    function init() {
+        myMap = new ymaps.Map("map", {
+            center: [47.224, 39.719],
+            zoom: 10
+        });
+
+        // Проходимся по каждой подстроке и создаем маркер для каждой точки
+        coordinatesArray.forEach(function(coordinate) {
+            var coords = coordinate.split(' ');
+
+            // Первое значение - широта, второе - долгота
+            var latitude = parseFloat(coords[0]);
+            var longitude = parseFloat(coords[1]);
+
+            // Создаем маркер для текущей точки
+            var marker = new ymaps.Placemark([latitude, longitude], {}, { preset: 'islands#dotIcon' });
+            myMap.geoObjects.add(marker);
+        });
+    }
+</script>
 </html>

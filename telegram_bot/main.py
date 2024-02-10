@@ -1,5 +1,6 @@
 from datetime import datetime
 
+import base64
 import telebot
 from telebot import types
 
@@ -105,13 +106,14 @@ def photos_problem(message):
             file_info = bot.get_file(file_id)
             file_path = file_info.file_path
             file_bytes = bot.download_file(file_path)
-            byte_array = bytearray(file_bytes)
+            byte_array = base64.b64encode(file_bytes)
+            DATA['photos'] = str(byte_array)
+            print(byte_array)
     bot.register_next_step_handler(message, regions)
 
 
 @bot.message_handler(commands=['region'])
 def regions(message):
-    DATA['text'] = message.text
     regions = DATABASE.get_regions()
     markup = types.ReplyKeyboardMarkup(row_width=1)
     message_to_chat = 'Выберите регион'

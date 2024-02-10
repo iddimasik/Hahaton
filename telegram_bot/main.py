@@ -13,7 +13,7 @@ DATA = {
     'text': None,
     'photos': None,
     'region': None,
-    'user': None,
+    'user_id': None,
     'date': None,
     'coordinates': None,
 }
@@ -23,9 +23,15 @@ NEW_PROBLEM_TEXT: str = 'Объявить о новой проблеме'
 DATABASE = DataBase()
 
 
+def output_files(message):
+    print(DATA)
+    bot.register_next_step_handler(message, contact_handler)
+
+
 @bot.message_handler(commands=['start'])
 def start_message(message):
     """Функиця срабатывает при старте бота."""
+
     message_to_chat = (
         'Привет, я Эко-Бот!\nТы можешь сообщить'
         ' о проблеме связанной с мусором на побережьях'
@@ -39,9 +45,10 @@ def start_message(message):
 
 @bot.message_handler(func=lambda message: True)
 def contact_handler(message):
-    if DATABASE.auth(message.text):
+    user_id = DATABASE.auth(message.text)
+    if user_id:
         message_to_chat = 'Вы аутентифицировались!'
-        bot.send_message(message.chat.id, message_to_chat)
+        DATA['user_id'] = user_id
         markup = types.ReplyKeyboardMarkup()
         status = types.KeyboardButton(STATUS_TEXT)
         new_problem = types.KeyboardButton(NEW_PROBLEM_TEXT)
@@ -52,6 +59,7 @@ def contact_handler(message):
         message_to_chat = (
             'Вашего номера нет в базе данных.'
             ' Вам необходимо пройти регистрацию на нашем сайте.'
+            ' После повторно напишите свой номер телефона.'
         )
         bot.send_message(message.chat.id, message_to_chat)
 
@@ -67,23 +75,95 @@ def on_click(message):
         bot.send_message(message.chat.id, message_to_chat)
     else:
         message_to_chat = 'Укажите заголовок проблемы'
-        bot.send_message(message.chat.id, message_to_chat)
-        bot.register_next_step_handler(message, after_title)
+        keyboard_remove = types.ReplyKeyboardRemove()
+        bot.send_message(message.chat.id, message_to_chat, reply_markup=keyboard_remove)
+        bot.register_next_step_handler(message, text_problem)
 
 
 @bot.message_handler(func=lambda message: True)
-def after_title(message):
+def text_problem(message):
     DATA['title'] = message.text
     DATA['date'] = datetime.now()
     message_to_chat = 'Укажите текст проблемы'
     bot.send_message(message.chat.id, message_to_chat)
-    bot.register_next_step_handler(message, after_text)
+    bot.register_next_step_handler(message, get_text)
 
 
 @bot.message_handler(func=lambda message: True)
-def after_text(message):
+def get_text(message):
     DATA['text'] = message.text
-    message_to_chat = ''
+    bot.register_next_step_handler(message, photos_problem)
+
+
+@bot.message_handler(func=lambda message: True)
+def photos_problem(message):
+    message_to_chat = 'Отправьте фотографии проблемы'
+    bot.send_message(message.chat.id, message_to_chat)
+    if message.photo:
+        for photo in message.photo:
+            file_id = photo.file_id
+            file_info = bot.get_file(file_id)
+            file_path = file_info.file_path
+            file_bytes = bot.download_file(file_path)
+            byte_array = bytearray(file_bytes)
+    bot.register_next_step_handler(message, regions)
+
+
+@bot.message_handler(commands=['region'])
+def regions(message):
+    DATA['text'] = message.text
+    regions = DATABASE.get_regions()
+    markup = types.ReplyKeyboardMarkup(row_width=1)
+    message_to_chat = 'Выберите регион'
+    for region_id, region_name in regions:
+        button = types.KeyboardButton(region_name)
+        markup.add(button)
+    bot.send_message(message.chat.id, message_to_chat, reply_markup=markup)
+    bot.register_next_step_handler(message, region)
+
+
+@bot.message_handler(func=lambda message: True)
+def region(message):
+    regions = DATABASE.get_regions()
+    region_index = None
+    for region_id, region_name in regions:
+        if message.text == region_name:
+            region_index = region_id
+    if region_index is None:
+        bot.message_handler(
+            message.chat.id,
+            'Данного региона нет в нашей базе данных'
+        )
+        bot.register_next_step_handler(message, regions)
+    DATA['region'] = region_index
+    keyboard_remove = types.ReplyKeyboardRemove()
+    bot.send_message(
+        message.chat.id,
+        'Отправьте геопозицию проблемы',
+        reply_markup=keyboard_remove
+    )
+    bot.register_next_step_handler(message, location)
+
+
+@bot.message_handler(commands=['location'])
+def location(message):
+    message_to_chat = (
+        'Все данные приняты!'
+        ' Чтобы дальше взаимодействовать с ботом введите номер телефона:'
+    )
+    if not message.location:
+        bot.send_message(
+            message.chat.id,
+            'Ошибка: Вы не скинули геопозицию'
+        )
+        bot.register_next_step_handler(message, location)
+
+    latitude = message.location.latitude
+    longitude = message.location.longitude
+    coords = f'{latitude}, {longitude}'
+    DATA['coordinates'] = coords
+    bot.send_message(message.chat.id, message_to_chat)
+    output_files(message)
 
 
 bot.infinity_polling()

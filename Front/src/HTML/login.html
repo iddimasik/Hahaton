@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login page</title>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="login.css">
+</head>
+<body>
+
+<div class="content">
+    <form name="f" method="post" action="/process_login" style="color: #B9B4C7">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+         <h1>Авторизация </h1>
+
+        <div class="container">
+            <label for="username" class="form-label">Имя пользователя: </label>
+            <input type="text" name="username" id="username" class="form-input">
+        </div>
+         <br>
+        <div class="container">
+             <label for="password" class="form-label">Пароль: </label>
+             <input type="password" name="password" id="password" class="form-input">
+             <br>
+        </div>
+
+        <div class="login-button">
+         <input type="submit" value="Login" class="log">
+        </div>
+
+      <div if="${param.error}" style="color: red" >
+        Неправильные имя или пароль
+      </div>
+    </form>
+
+</div>
+
+</body>
+</html>

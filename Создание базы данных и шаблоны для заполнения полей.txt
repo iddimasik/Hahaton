@@ -1,3 +1,4 @@
+
 CREATE TABLE Users (
     id SERIAL PRIMARY KEY,
     first_name VARCHAR(100) NOT NULL,
@@ -42,7 +43,17 @@ CREATE TABLE Problem_Reviews (
 
 CREATE TABLE Images (
     id SERIAL PRIMARY KEY,
-    image_data BYTEA NOT NULL,
+    image_data TEXT NOT NULL,
+    pollution_place_id INT NOT NULL,
+    FOREIGN KEY (pollution_place_id) REFERENCES Pollution_Places(id)
+);
+
+CREATE TABLE Сleaning_day (
+    id SERIAL PRIMARY KEY,
+    clean_title VARCHAR(155) NOT NULL,
+    clean_text TEXT NOT NULL,
+    creation_date TIMESTAMP NOT NULL,
+    count_people INT DEFAULT 0,
     pollution_place_id INT NOT NULL,
     FOREIGN KEY (pollution_place_id) REFERENCES Pollution_Places(id)
 );
@@ -62,6 +73,9 @@ INSERT INTO Users (first_name, last_name, email, user_status, phone_number, logi
 ('David', 'Jones', 'david@example.com', 'Оператор раздельного сбора мусора', '999-888-7777', 'david_jones', 'password5');
 
 INSERT INTO Pollution_Places (problem_title, problem_text, problem_status, region_id, user_id, coordinates_xy) VALUES
-('Pollution Problem 1', 'Description of Pollution Problem 1', 'Pending', 1, 1, '12.3456, 78.9101'),
-('Pollution Problem 2', 'Description of Pollution Problem 2', 'In Progress', 2, 2, '23.4567, 89.1011'),
-('Pollution Problem 3', 'Description of Pollution Problem 3', 'Resolved', 3, 3, '34.5678, 91.0112');
+('Pollution Problem 1', 'Description of Pollution Problem 1', 'Pending', 1, 1, '12.3456 78.9101'),
+('Pollution Problem 2', 'Description of Pollution Problem 2', 'In Progress', 2, 2, '23.4567 89.1011'),
+('Pollution Problem 3', 'Description of Pollution Problem 3', 'Resolved', 3, 3, '34.5678 91.0112');
+
+INSERT INTO Images (image_data, pollution_place_id) 
+VALUES    ('\\x89504e470d0a1a0a0000000d494844520000001000000010080200000090cba4000000017352474200aece1ce90000000467414d410000b18f0bfc6105000000097048597300000ec400000ec401952b0e1b0000001974455874536f6674776172650077657265736f7572636500a8f5429d0000000a4944415478daed9dbd4a0b00020e03022156fa10c0f4e25c10234568bba24c465b3f06314e0f1b8e9f8a49c880a72f1316b9f0ad2ee5151f138a1e30000000049454e44ae426082', 3);

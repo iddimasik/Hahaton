@@ -23,28 +23,20 @@ class DataBase:
             connection.autocommit = True
 
             with connection.cursor() as cursor:
-                print('[DEBUG] Подключение прошло успешно.')
+                print('[DEBUG] Подключение прошло успешно. Точка входа - таблица Users')
                 cursor.execute(
                     """SELECT * FROM users;"""
                 )
                 users_data = cursor.fetchall()
+                keys = [
+                    'id', 'first_name', 'last_name',
+                    'email', 'user_status', 'role',
+                    'phone_number', 'login', 'password'
+                ]
                 all_users = {}
-                user_data = {
-                    'id': None,
-                    'name': None,
-                    'last_name': None,
-                    'email': None,
-                    'user_status': None,
-                    'role': None,
-                    'phone_number': None,
-                    'login': None,
-                    'password': None
-                }
-                for user in users_data:
-                    for user_value in user:
-                        for key, value in user_data.items():
-                            user_data[key] = user_value
-                    all_users[user[0]] = user_data
+                for i in range(len(users_data)):
+                    data_dict = dict(zip(keys, users_data[i]))
+                    all_users[str(i + 1)] = data_dict
                 return all_users
 
         except Exception as error:
@@ -59,6 +51,34 @@ class DataBase:
         flag = False
         for data_user in all_users.values():
             if data_user['phone_number'] == phone_number_from_telegram:
-                flag = True
-                return True
-        return False
+                return data_user['id']
+        return flag
+
+    def get_regions(self):
+        try:
+            connection = psycopg2.connect(
+                host=self.host,
+                user=self.user,
+                password=self.password,
+                database=self.db_name
+            )
+            connection.autocommit = True
+
+            with connection.cursor() as cursor:
+                print('[DEBUG] Подключение прошло успешно. Точка входа - таблица Regions')
+                cursor.execute(
+                    """SELECT * FROM regions;"""
+                )
+                all_regions = cursor.fetchall()
+                return all_regions
+
+        except Exception as error:
+            raise Exception(f'[CRITICAL] Что-то не так с подключением к базе данных - {error}!')
+        finally:
+            if connection:
+                connection.close()
+                print('[DEBUG] Подключение успешно закрылось.')
+
+
+element = DataBase()
+print(element.auth('124'))

@@ -6,6 +6,8 @@ import LeftPanel from "./main/LeftPanel";
 import Queue from "./main/Queue";
 import Working from "./main/Working";
 import End from "./main/End";
+import  "./main/login.css";
+
 function App() {
   return (
       <div className="App ">
@@ -13,7 +15,6 @@ function App() {
               <Head/>
           </header>
 
-          <body>
 
           <div className="h-[92vh] w-screen bg-cover justify-between bg-center bg-no-repeat object-cover"
                style={{backgroundImage: `url(${require("./img/back.png")})`}} >
@@ -29,7 +30,7 @@ function App() {
 
           </div>
 
-          </body>
+
 
       </div>
   );

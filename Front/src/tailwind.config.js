@@ -4,4 +4,7 @@ module.exports = {
     extend: {},
   },
   plugins: [],
+  colors:{
+    dark: "#0d429a"
+  },
 }

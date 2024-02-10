@@ -2,6 +2,8 @@ package ru.seals.spring.App.models;
 
 import ru.seals.spring.App.util.UserStatus;
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -22,14 +24,14 @@ public class TrashPlace {
     @Column(name = "problem_status")
     private String problemStatus;
 
-    @Column(name = "region_id ")
+    @Column(name = "region_id")
     private int regionId;
 
     @Column(name = "user_id")
     private int userId;
 
     @Column(name = "creation_date")
-    private Date date;
+    private LocalDateTime date;
 
     @Column(name = "coordinates_xy")
     private String coordinates;
@@ -76,10 +78,10 @@ public class TrashPlace {
         this.userId = userId;
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 

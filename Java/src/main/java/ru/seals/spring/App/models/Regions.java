@@ -15,6 +15,7 @@ public class Regions {
     @Column(name = "region_name")
     private String regionName;
 
+
     public int getId() {
         return id;
     }

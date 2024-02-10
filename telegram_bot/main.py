@@ -1,12 +1,12 @@
-import requests
-import telebot
-from telebot import types
 from datetime import datetime
 
+import telebot
+from telebot import types
+
+from DataBaseClass import DataBase
 
 BOT_TOKEN = '6687303614:AAE6oFosY9JKmCRcJYY4zg1kh3Gud9o2U_A'
 bot = telebot.TeleBot(token=BOT_TOKEN)
-
 
 DATA = {
     'title': None,
@@ -20,6 +20,7 @@ DATA = {
 
 STATUS_TEXT: str = 'Узнать статус проблем'
 NEW_PROBLEM_TEXT: str = 'Объявить о новой проблеме'
+DATABASE = DataBase()
 
 
 @bot.message_handler(commands=['start'])
@@ -28,15 +29,31 @@ def start_message(message):
     message_to_chat = (
         'Привет, я Эко-Бот!\nТы можешь сообщить'
         ' о проблеме связанной с мусором на побережьях'
-        ' и мы решим ее.'
+        ' и мы решим ее.\nПеред использованием убедитесь, что'
+        ' ваш номер телефона зарегистрирован на нашем сайте!'
+        ' Напишите свой номер телефона.'
     )
-    markup = types.ReplyKeyboardMarkup()
-    status = types.KeyboardButton(STATUS_TEXT)
-    new_problem = types.KeyboardButton(NEW_PROBLEM_TEXT)
-    markup.row(status, new_problem)
+    bot.send_message(message.chat.id, message_to_chat)
+    bot.register_next_step_handler(message, contact_handler)
 
-    bot.send_message(message.chat.id, message_to_chat, reply_markup=markup)
-    bot.register_next_step_handler(message, on_click)
+
+@bot.message_handler(func=lambda message: True)
+def contact_handler(message):
+    if DATABASE.auth(message.text):
+        message_to_chat = 'Вы аутентифицировались!'
+        bot.send_message(message.chat.id, message_to_chat)
+        markup = types.ReplyKeyboardMarkup()
+        status = types.KeyboardButton(STATUS_TEXT)
+        new_problem = types.KeyboardButton(NEW_PROBLEM_TEXT)
+        markup.row(status, new_problem)
+        bot.send_message(message.chat.id, message_to_chat, reply_markup=markup)
+        bot.register_next_step_handler(message, on_click)
+    else:
+        message_to_chat = (
+            'Вашего номера нет в базе данных.'
+            ' Вам необходимо пройти регистрацию на нашем сайте.'
+        )
+        bot.send_message(message.chat.id, message_to_chat)
 
 
 @bot.message_handler(func=lambda message: True)

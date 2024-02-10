@@ -79,6 +79,27 @@ class DataBase:
                 connection.close()
                 print('[DEBUG] Подключение успешно закрылось.')
 
+    def insert_data_in_db(self, data):
+        try:
+            connection = psycopg2.connect(
+                host=self.host,
+                user=self.user,
+                password=self.password,
+                database=self.db_name
+            )
+            connection.autocommit = True
+
+            with connection.cursor() as cursor:
+                print('[DEBUG] Подключение к базе данных прошло успешно. Точка входа - таблица')
+
+
+        except Exception as error:
+            raise Exception(f'[CRITICAL] Что-то не так с подключением к базе данных - {error}!')
+        finally:
+            if connection:
+                connection.close()
+                print('[DEBUG] Подключение успешно закрылось.')
+
 
 element = DataBase()
 print(element.auth('124'))

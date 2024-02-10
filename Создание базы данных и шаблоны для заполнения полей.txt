@@ -62,6 +62,6 @@ INSERT INTO Users (first_name, last_name, email, user_status, phone_number, logi
 ('David', 'Jones', 'david@example.com', 'Оператор раздельного сбора мусора', '999-888-7777', 'david_jones', 'password5');
 
 INSERT INTO Pollution_Places (problem_title, problem_text, problem_status, region_id, user_id, coordinates_xy) VALUES
-('Pollution Problem 1', 'Description of Pollution Problem 1', 'Pending', 1, 1, '12.3456, 78.9101'),
-('Pollution Problem 2', 'Description of Pollution Problem 2', 'In Progress', 2, 2, '23.4567, 89.1011'),
-('Pollution Problem 3', 'Description of Pollution Problem 3', 'Resolved', 3, 3, '34.5678, 91.0112');
+('Pollution Problem 1', 'Description of Pollution Problem 1', 'Pending', 1, 1, '12.3456 78.9101'),
+('Pollution Problem 2', 'Description of Pollution Problem 2', 'In Progress', 2, 2, '23.4567 89.1011'),
+('Pollution Problem 3', 'Description of Pollution Problem 3', 'Resolved', 3, 3, '34.5678 91.0112');

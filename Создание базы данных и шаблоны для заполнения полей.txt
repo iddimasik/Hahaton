@@ -31,7 +31,6 @@ CREATE TABLE Pollution_Places (
 
 CREATE TABLE Problem_Reviews (
     id SERIAL PRIMARY KEY,
-    review_author VARCHAR(100) NOT NULL,
     review_text TEXT NOT NULL,
     creation_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     publication_status VARCHAR(50) NOT NULL,

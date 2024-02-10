@@ -26,6 +26,10 @@ public class ImageService {
         return imageRep.findById(id).orElse(null);
     }
 
+    public Images findByPollutionPlace(int id) {
+        return imageRep.findByPollutionPlaceId(id).orElse(null);
+    }
+
     public void save(Images typeCourse) {
         imageRep.save(typeCourse);
     }

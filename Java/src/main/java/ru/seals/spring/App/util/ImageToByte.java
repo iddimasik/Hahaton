@@ -27,7 +27,7 @@ public class ImageToByte {
             BufferedImage image = ImageIO.read(new File(imagePath));
             ImageIO.write(image, "jpg", baos);
             byte[] imageBytes = baos.toByteArray();
-
+            System.out.println(imagePath);
             String base64String = Base64.getEncoder().encodeToString(imageBytes);
             Images images = new Images();
             images.setImageData(base64String);
@@ -39,22 +39,15 @@ public class ImageToByte {
         }
     }
 
-    public void convertBytesFromFileToImage(String textFilePath, String outputImagePath) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(textFilePath))) {
-            StringBuilder stringBuilder = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                stringBuilder.append(line);
-            }
-            String base64String = stringBuilder.toString();
+    public String convertBytesFromFileToImage(int id) throws IOException {
+            String outputImagePath = "C:\\Users\\Antares\\Desktop\\Seahack\\Hahaton\\Java\\src\\main\\resources\\static\\img\\resultImage" + id + ".jpg";
+            String base64String = imageService.findByPollutionPlace(id).getImageData();
             byte[] decodedBytes = Base64.getDecoder().decode(base64String);
 
             ByteArrayInputStream bais = new ByteArrayInputStream(decodedBytes);
             BufferedImage resultImage = ImageIO.read(bais);
             ImageIO.write(resultImage, "jpg", new File(outputImagePath));
-            System.out.println("Изображение успешно восстановлено из файла: " + outputImagePath);
-        } catch (IOException e) {
-            System.err.println("Ошибка при чтении данных из файла или записи изображения: " + e.getMessage());
-        }
+             System.out.println(outputImagePath);
+            return outputImagePath;
     }
 }

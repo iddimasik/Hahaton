@@ -138,7 +138,7 @@ class DataBase:
                 image_data['pollution_place_id'] = cursor.fetchall()[0][0]
                 print(
                     '[DEBUG] Из таблицы Pollution_Places'
-                    ' был получен id из созданной записи'
+                    ' был получен id из созданной записи.'
                 )
                 cursor.execute(data_query_insert_photo, image_data)
                 print(
@@ -149,6 +149,51 @@ class DataBase:
             raise Exception(
                 f'[CRITICAL] Что-то не так с '
                 f'подключением к базе данных - {error}!'
+            )
+        finally:
+            if connection:
+                connection.close()
+                print('[DEBUG] Подключение успешно закрылось.')
+
+    def get_problem_dict(self, user_id):
+        try:
+            connection = psycopg2.connect(
+                host=self.host,
+                user=self.user,
+                password=self.password,
+                database=self.db_name
+            )
+            connection.autocommit = True
+
+            data_user = {'user_id': user_id}
+            query_to_get_user_problems = """
+            SELECT problem_title, problem_status, creation_date, coordinates_xy
+            FROM pollution_places
+            WHERE user_id = %(user_id)s;
+            """
+
+            with connection.cursor() as cursor:
+                print(
+                    '[DEBUG] Подключение к базе данных прошло'
+                    ' успешно. Точка входа - таблица Pollution_Places.'
+                )
+                cursor.execute(query_to_get_user_problems, data_user)
+                print('[DEBUG] получение полей по user_id прошло успешно.')
+                problems = cursor.fetchall()
+                keys = [
+                    'problem_title', 'problem_status',
+                    'creation_date', 'coordinates_xy'
+                ]
+                problem_dict = {}
+                for i in range(len(problems)):
+                    data_dict = dict(zip(keys, problems[i]))
+                    problem_dict[i + 1] = data_dict
+                return problem_dict
+
+        except Exception as error:
+            raise Exception(
+                f'[CRITICAL] Что-то не так с'
+                f' подключением к базе данных - {error}!'
             )
         finally:
             if connection:

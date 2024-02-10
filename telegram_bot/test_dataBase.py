@@ -21,13 +21,13 @@ try:
     with connection.cursor() as cursor:
         cursor.execute(
             """
-            SELECT id
+            SELECT problem_title, problem_status, creation_date, coordinates_xy
             FROM pollution_places
-            WHERE coordinates_xy = '47.271604 39.776809';
+            WHERE user_id = '1';
             """
         )
         print('successfully get')
-        pprint(cursor.fetchall()[0][0])
+        pprint(cursor.fetchall())
 
 
 except Exception as error:

@@ -6,6 +6,7 @@ from telebot import types
 
 from DataBaseClass import DataBase
 
+
 BOT_TOKEN = '6687303614:AAE6oFosY9JKmCRcJYY4zg1kh3Gud9o2U_A'
 bot = telebot.TeleBot(token=BOT_TOKEN)
 
@@ -28,7 +29,6 @@ DATABASE = DataBase()
 @bot.message_handler(commands=['start'])
 def start_message(message):
     """Функиця срабатывает при старте бота."""
-
     message_to_chat = (
         'Привет, я Эко-Бот!\nТы можешь сообщить'
         ' о проблеме связанной с мусором на побережьях'
@@ -41,11 +41,7 @@ def start_message(message):
 
 
 def auth_user(message):
-    phone_number = message.text
-    user_id = DATABASE.auth(phone_number)
-    if user_id:
-        DATA['user_id'] = user_id
-
+    if DATA['user_id'] is not None:
         markup = types.ReplyKeyboardMarkup()
         status_button = types.KeyboardButton(STATUS_TEXT)
         new_problem_button = types.KeyboardButton(NEW_PROBLEM_TEXT)
@@ -53,33 +49,76 @@ def auth_user(message):
 
         bot.send_message(
             message.chat.id,
-            'Авторизация прошла успешно!'
-            ' Теперь вы можете: Просмотреть статусы'
-            ' выполнения проблемы или объявить о новой проблеме.',
+            'Выберете действие:',
             reply_markup=markup
         )
         bot.register_next_step_handler(message, choice)
     else:
-        bot.send_message(
-            message.chat.id,
-            'Такого номера нет в нашей базе данных!'
-            ' Попробуйте снова ввести номер телефона.'
-        )
-        bot.register_next_step_handler(message, auth_user)
+        phone_number = message.text
+        user_id = DATABASE.auth(phone_number)
+        if user_id:
+            DATA['user_id'] = user_id
+
+            markup = types.ReplyKeyboardMarkup()
+            status_button = types.KeyboardButton(STATUS_TEXT)
+            new_problem_button = types.KeyboardButton(NEW_PROBLEM_TEXT)
+            markup.row(status_button, new_problem_button)
+
+            bot.send_message(
+                message.chat.id,
+                'Авторизация прошла успешно!'
+                ' Теперь вы можете: Просмотреть статусы'
+                ' выполнения проблемы или объявить о новой проблеме.',
+                reply_markup=markup
+            )
+            bot.register_next_step_handler(message, choice)
+        else:
+            bot.send_message(
+                message.chat.id,
+                'Такого номера нет в нашей базе данных!'
+                ' Попробуйте снова ввести номер телефона.'
+            )
+            bot.register_next_step_handler(message, auth_user)
 
 
 def choice(message):
     user_choice = message.text
+    keyboard_remove = types.ReplyKeyboardRemove()
     if user_choice == STATUS_TEXT:
-        pass
-    else:
-        keyboard_remove = types.ReplyKeyboardRemove()
+        bot.send_message(
+            message.chat.id,
+            'Высылаю вам статусы проблем,'
+            ' которые были отправлены вами...',
+        )
+        user_problems = DATABASE.get_problem_dict(DATA['user_id'])
+        for problem_num, problem_dict in user_problems.items():
+            message_to_chat = (
+                f'{problem_num}) {problem_dict['problem_title']}\n'
+                f'Статус: {problem_dict['problem_status']}\n'
+                f'Координаты: {problem_dict['coordinates_xy']}\n'
+                f'Дата создания: {problem_dict['creation_date']}'
+            )
+            bot.send_message(
+                message.chat.id,
+                message_to_chat
+            )
+        bot.register_next_step_handler(message, auth_user)
+
+    elif user_choice == NEW_PROBLEM_TEXT:
         bot.send_message(
             message.chat.id,
             'Введите заголовок проблемы:',
             reply_markup=keyboard_remove
         )
         bot.register_next_step_handler(message, get_title)
+    else:
+        bot.send_message(
+            message.chat_id,
+            'Произошла ошибка: то значение,'
+            ' которое вы выбрали - не существует!'
+            ' Попробуйте снова.'
+        )
+        bot.register_next_step_handler(message, choice)
 
 
 def get_title(message):
@@ -179,8 +218,8 @@ def get_location(message):
             'Ваш запрос был направлен на рассмотренией администрацией.'
         )
         DATA['creation_date'] = datetime.now()
-        print(DATA)
         DATABASE.insert_data_in_db(DATA)
+        bot.register_next_step_handler(message, auth_user)
     else:
         bot.send_message(
             message.chat.id,

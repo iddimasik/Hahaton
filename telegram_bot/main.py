@@ -10,13 +10,14 @@ BOT_TOKEN = '6687303614:AAE6oFosY9JKmCRcJYY4zg1kh3Gud9o2U_A'
 bot = telebot.TeleBot(token=BOT_TOKEN)
 
 DATA = {
-    'title': None,
-    'text': None,
-    'photos': None,
-    'region': None,
+    'problem_title': None,
+    'problem_text': None,
+    'problem_status': 'На рассмотрении',
+    'region_id': None,
     'user_id': None,
-    'date': None,
-    'coordinates': None,
+    'creation_date': None,
+    'coordinates_xy': None,
+    'image_data': None,
 }
 
 STATUS_TEXT: str = 'Узнать статус проблем'
@@ -84,7 +85,7 @@ def choice(message):
 def get_title(message):
     title = message.text
     if title:
-        DATA['title'] = title
+        DATA['problem_title'] = title
         bot.send_message(
             message.chat.id,
             f'Спасибо, я сохранил ваш заголовок - {title}. Введите текст проблемы:'
@@ -101,7 +102,7 @@ def get_title(message):
 def get_text(message):
     text = message.text
     if text:
-        DATA['text'] = text
+        DATA['problem_text'] = text
         bot.send_message(
             message.chat.id,
             'Текст проблемы сохранен. Отправьте фотографии,'
@@ -123,7 +124,7 @@ def get_photos(message):
             file_path = file_info.file_path
             file_bytes = bot.download_file(file_path)
             encoded_image = str(base64.b64encode(file_bytes))
-            DATA['images'] = encoded_image[2:len(encoded_image) - 1]
+            DATA['image_data'] = encoded_image[2:len(encoded_image) - 1]
         regions = DATABASE.get_regions()
         markup = types.ReplyKeyboardMarkup(row_width=1)
         for region_id, region_name in regions:
@@ -148,7 +149,7 @@ def get_region(message):
             region_index = region_id
 
     if region_index is not None:
-        DATA['region'] = region_index
+        DATA['region_id'] = region_index
         keyboard_remove = types.ReplyKeyboardRemove()
         bot.send_message(
             message.chat.id,
@@ -171,13 +172,14 @@ def get_location(message):
     if message.location:
         latitude = message.location.latitude
         longitude = message.location.longitude
-        DATA['coordinates'] = f'{latitude} {longitude}'
+        DATA['coordinates_xy'] = f'{latitude} {longitude}'
         bot.send_message(
             message.chat.id,
             'Геопозиция была успешно сохранена! '
             'Ваш запрос был направлен на рассмотренией администрацией.'
         )
-        DATA['date'] = datetime.now()
+        DATA['creation_date'] = datetime.now()
+        print(DATA)
         DATABASE.insert_data_in_db(DATA)
     else:
         bot.send_message(

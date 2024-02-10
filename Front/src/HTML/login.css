@@ -25,12 +25,19 @@ span{
     font-family: 'Montserrat Alternates', sans-serif;
 
 }
+.contentReg{
+    padding: 30px;
+    background-color: #dceafc;
+    border-radius: 20px;
+    font-family: 'Montserrat Alternates', sans-serif;
+    display: flex;
+    flex-direction: row;
+}
 .content{
   padding: 30px;
     background-color: #dceafc;
     border-radius: 20px;
     font-family: 'Montserrat Alternates', sans-serif;
-
 
 }
 .error-message {
@@ -51,11 +58,20 @@ span{
     display: block; /* Располагаем элементы в столбик */
     margin-bottom: 5px; /* Отступ между элементами */
 }
+label{
+    color:#0b2356;
+
+}
 .form-input{
-    width: 293px; /* Ширина input */
-    height: 38px; /* Высота input */
+    width: 293px; /
+    height: 28px;
     border-radius: 10px;
     border: none;
+}
+
+select#region.form-input{
+    height: 3rem;
+    background: #d6e0ee;
 }
 
 .log{
@@ -65,7 +81,7 @@ span{
     border: none;
     border-radius: 10px;
     font-size: 23px;
-    color: #0d110e;
+    color: white;
     margin-bottom: 20px;
 }
 h1{
@@ -81,7 +97,7 @@ input[type=text]{
     outline: none;
     border-bottom: .2em solid #4b62ae;
     background: #d6deee;
-    padding: .4em;
+    height: 2.5rem;
     color: #4b5bae;
 }
 
@@ -356,56 +372,16 @@ h2{
 }
 
 /**/
-/**/.form-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-    }
 
-.form {
-    width: 400px;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+textarea#message{
+    border: none; /* Убираем обводку */
+    resize: none;
+    width: 18rem;
+    margin-bottom: 1rem;
+    margin-top: 0.5rem;
+    border-radius: 1rem;
 }
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-}
-
-.form-group input[type="text"],
-.form-group input[type="email"],
-.form-group textarea {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-}
-
-.form-group textarea {
-    height: 100px;
-}
-
-.photo-upload label {
-    display: block;
-    margin-bottom: 5px;
-}
-
-.photo-upload input[type="file"] {
-    margin-bottom: 10px;
-}
-
-button[type="submit"] {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 3px;
-    cursor: pointer;
+.bottunCont{
+    display: flex;
+    flex-direction: row;
 }

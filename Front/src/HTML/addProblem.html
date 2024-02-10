@@ -2,43 +2,57 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" type="text/css" href="login.css">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Upload Form</title>
+    <link rel="stylesheet" href="login.css">
 </head>
 <body>
-<div class="form-container">
-    <form class="form">
-        <div class="form-group">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name">
+
+<div class="content">
+    <form name="f" method="post" action="/process_login" style="color: #B9B4C7">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        <h1>Проблема  </h1>
+
+        <div class="container">
+            <label for="title" class="form-label">Заголовок: </label>
+            <input type="text" name="username" id="title" class="form-input">
         </div>
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email">
+
+        <div class="container">
+            <label for="region" class="form-label">Регион </label>
+            <select name="region" id="region" class="form-input">
+                <option value="region1">Регион 1</option>
+                <option value="region2">Регион 2</option>
+                <option value="region3">Регион 3</option>
+            </select>
         </div>
-        <div class="form-group">
-            <label for="message">Message:</label>
-            <textarea id="message" name="message"></textarea>
+        <div class="container">
+            <label for="message">Сообщение</label>
+            <textarea id="message" name="message" rows="4" required></textarea>
         </div>
-        <div class="photo-upload">
-            <label for="photo1">Photo 1:</label>
+        <div class="bottunCont">
+        <div class="container">
             <input type="file" id="photo1" name="photo1" accept="image/*">
         </div>
-        <div class="photo-upload">
-            <label for="photo2">Photo 2:</label>
+        <div class="container">
             <input type="file" id="photo2" name="photo2" accept="image/*">
         </div>
-        <div class="photo-upload">
-            <label for="photo3">Photo 3:</label>
+        <div class="container">
             <input type="file" id="photo3" name="photo3" accept="image/*">
         </div>
-        <div class="photo-upload">
-            <label for="photo4">Photo 4:</label>
+        <div class="container">
             <input type="file" id="photo4" name="photo4" accept="image/*">
         </div>
-        <button type="submit">Submit</button>
+        </div>
+        <div class="login-button">
+            <input type="submit" value="Создать" class="log">
+        </div>
+
+        <div if="${param.error}" style="color: red" >
+            Неправильные имя или пароль
+        </div>
     </form>
+
 </div>
 
 </body>

@@ -3,27 +3,217 @@
 <head>
     <meta charset="UTF-8">
     <title>Hello</title>
+    <link rel="stylesheet" href="/css/login.css">
     <script src="https://api-maps.yandex.ru/2.1/?apikey=bde52139-d90a-4c75-9dce-5206156c28bd&lang=ru_RU" type="text/javascript">
     </script>
 </head>
+<header>
+    <div class="MainHead">
+        <div class="header">
+            <h1 class="logo">TeamSeal</h1>
+            <div class="actions">
+                <button class="cta">
+                    <img src="/img/ex.png" alt="icon" class="icony">
+                </button>
+                <form th:action="@{/logout}" th:method="post">
+                    <button type="submit" >
+                        <img src="/img/exit.png" alt="icon" class="icony">
+                    </button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</header>
+
 <body>
-<form th:action="@{/problem/add}" method="GET">
-    <input type="submit" value="Добавить проблему">
-</form>
-<form th:action="@{/logout}" th:method="post">
-    <input type="submit" value="Logout">
-</form>
-<h1>Список проблем</h1>
-<div th:each="problem : ${problems}">
-    <a th:href="@{/problem/{id}(id=${problem.getId()})}"
-       th:text="${ 'Заголовок:' + problem.getTitle()  + 'Описание: ' + problem.getText()}">problem</a>
+<!--<form th:action="@{/problem/add}" method="GET">-->
+<!--    <input type="submit" value="Добавить проблему">-->
+<!--</form>-->
+<!--<form th:action="@{/logout}" th:method="post">-->
+<!--    <input type="submit" value="Logout">-->
+<!--</form>-->
+<!--<h1>Список проблем</h1>-->
+<!--<div th:each="problem : ${problems}">-->
+<!--    <a th:href="@{/problem/{id}(id=${problem.getId()})}"-->
+<!--       th:text="${ 'Заголовок:' + problem.getTitle()  + 'Описание: ' + problem.getText()}">problem</a>-->
 
-    <input type="hidden" id="coordinates" th:value="${problems}">
+<!--    <input type="hidden" id="coordinates" th:value="${problems}">-->
+<!--</div>-->
+
+
+<!--<h1>Общая карта</h1>-->
+<!--<div id="map" style="width: 600px; height: 400px"></div>-->
+<div class="mainMAin">
+    <div class="huhu">
+
+        <div class="box">
+            <form th:action="@{/problem/add}" method="GET">
+                <button type="submit">
+                    <img src="/img/add.png" alt="icon" class="icon">
+                    <span class="text">Добавить проблему</span>
+                </button>
+            </form>
+        </div>
+
+        <div class="desc">
+            <div class="queue">
+                <div class="inner-container">
+                    <h1>В очереди</h1>
+                    <div class="problems">
+                        <!-- Вставьте сюда элементы с проблемами -->
+                        <div class="problem-list">
+                            <div class="containerProblem">
+                                <div class="itemProblem">
+                                    <div class="cardProblem" th:each="problem : ${problems}">
+                                        <span class="heading" ></span>
+
+                                        <div class="details">
+
+                                            <button class="buttonProblem">
+                                                <img class="iconProblem" src="../img/map.png" alt="icon">
+                                            </button>
+                                            <span class="region">Регион</span>
+                                        </div>
+                                        <div class="info">
+                                            <span class="date">22.01.2024</span>
+                                            <span class="name">Иванов И.И.</span>
+                                        </div>
+                                        <span class="status">Статус</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="queue">
+                <div class="inner-container">
+                    <h1>В работе</h1>
+                    <div class="problems">
+                        <!-- Вставьте сюда элементы с проблемами -->
+                        <div class="containerProblem">
+                            <div class="itemProblem">
+                                <div class="cardProblem">
+                                    <span class="heading">Заголовок</span>
+
+                                    <div class="details">
+
+                                        <button class="buttonProblem">
+                                            <img class="iconProblem" src="../img/map.png" alt="icon">
+                                        </button>
+                                        <span class="region">Регион</span>
+                                    </div>
+                                    <div class="info">
+                                        <span class="date">22.01.2024</span>
+                                        <span class="name">Иванов И.И.</span>
+                                    </div>
+
+
+                                    <span class="status">Статус</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="queue">
+                <div class="inner-container">
+                    <h1>В завершено</h1>
+                    <div class="problems">
+                        <!-- Вставьте сюда элементы с проблемами -->
+                        <div class="problem-list">
+                            <!-- Problem items go here -->
+                            <div class="containerProblem">
+                                <div class="itemProblem">
+                                    <div class="cardProblem">
+                                        <span class="heading">Заголовок</span>
+
+                                        <div class="details">
+
+                                            <button class="buttonProblem">
+                                                <img class="iconProblem" src="../img/map.png" alt="icon">
+                                            </button>
+                                            <span class="region">Регион</span>
+                                        </div>
+                                        <div class="info">
+                                            <span class="date">22.01.2024</span>
+                                            <span class="name">Иванов И.И.</span>
+                                        </div>
+
+
+                                        <span class="status">Статус</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="containeRight">
+            <div class="card">
+                <h2 class="card-titleRight">Личный кабинет</h2>
+                <div class="card-content">
+                    <div class="sosi">
+                        <div class="infoRight">
+                            <span class="info-label">ФИО:</span>
+                            <span class="info-value">Иванов И.И.</span>
+                        </div>
+                        <div class="infoRight">
+                            <span class="info-label">Контакты:</span>
+                            <span class="info-value">+79515288888</span>
+                        </div>
+                        <div class="infoRight">
+                            <span class="info-label">Статус:</span>
+                            <span class="info-value">Активист</span>
+                        </div>
+                    </div>
+
+                    <div class="problems">
+                        <span class="problems-label">Посмотреть  доски</span>
+                        <div class="problem-list">
+                            <!-- Problem items go here -->
+                            <div class="containerProblem">
+                                <div class="itemProblem">
+                                    <div class="cardProblem">
+                                        <span class="heading">Заголовок</span>
+
+                                        <div class="details">
+
+                                            <button class="buttonProblem">
+                                                <img class="iconProblem" src="../img/map.png" alt="icon">
+                                            </button>
+                                            <span class="region">Регион</span>
+                                        </div>
+                                        <div class="info">
+                                            <span class="date">22.01.2024</span>
+                                            <span class="name">Иванов И.И.</span>
+                                        </div>
+
+
+                                        <span class="status">Статус</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
 </div>
-
-
-<h1>Общая карта</h1>
-<div id="map" style="width: 600px; height: 400px"></div>
 </body>
 
 <script type="text/javascript">

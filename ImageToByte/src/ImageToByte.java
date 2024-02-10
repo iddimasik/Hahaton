@@ -6,11 +6,9 @@ import java.util.Base64;
 public class ImageToByte {
     public static void main(String[] args) throws IOException {
         String imagePath = "example.jpg";
-        String textFilePath = "file.txt";
+        String textFilePath = "photo.txt";
 
-        convertImageToBytesAndSave(imagePath, textFilePath);
-
-        // Convert byte array from text file to image
+        //convertImageToBytesAndSave(imagePath, textFilePath);
         convertBytesFromFileToImage(textFilePath, "resultImage.jpg");
     }
 

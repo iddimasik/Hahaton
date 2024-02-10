@@ -535,6 +535,40 @@ video {
   --tw-backdrop-sepia:  ;
 }
 
+.container {
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .container {
+    max-width: 640px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1024px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    max-width: 1280px;
+  }
+}
+
+@media (min-width: 1536px) {
+  .container {
+    max-width: 1536px;
+  }
+}
+
 .mb-2 {
   margin-bottom: 0.5rem;
 }
@@ -571,6 +605,10 @@ video {
   display: flex;
 }
 
+.hidden {
+  display: none;
+}
+
 .h-\[1\.5rem\] {
   height: 1.5rem;
 }
@@ -601,6 +639,10 @@ video {
 
 .h-\[92vh\] {
   height: 92vh;
+}
+
+.h-\[35rem\] {
+  height: 35rem;
 }
 
 .w-\[1\.5rem\] {

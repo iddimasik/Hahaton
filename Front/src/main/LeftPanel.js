@@ -20,12 +20,14 @@ function LeftPanel(){
                             <span className="text-[1.3rem]">Статус:</span>
                             <span>Активист</span>
                         </div>
-                        <div className="Problems overflow-auto overflow-x-hidden h-[15rem]">
+                        <div className="Problems flex flex-col ">
                         <span className="text-[1.3rem] text-white mb-2">Решенные проблем:</span>
+                            <div className="Problems overflow-auto overflow-x-hidden h-[15rem]">
                             <Problem/>
                             <Problem/>
                             <Problem/>
-                        </div>
+                            </div>
+                            </div>
                     </div>
 
                 </div>

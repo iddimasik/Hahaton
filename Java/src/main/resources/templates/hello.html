@@ -5,7 +5,9 @@
     <title>Hello</title>
 </head>
 <body>
-Hello World!
+<form th:action="@{/problem/add}" method="GET">
+    <input type="submit" value="Добавить проблему">
+</form>
 <form th:action="@{/logout}" th:method="post">
     <input type="submit" value="Logout">
 </form>

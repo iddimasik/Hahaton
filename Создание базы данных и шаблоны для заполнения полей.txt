@@ -43,7 +43,7 @@ CREATE TABLE Problem_Reviews (
 
 CREATE TABLE Images (
     id SERIAL PRIMARY KEY,
-    image_data BYTEA NOT NULL,
+    image_data TEXT NOT NULL,
     pollution_place_id INT NOT NULL,
     FOREIGN KEY (pollution_place_id) REFERENCES Pollution_Places(id)
 );

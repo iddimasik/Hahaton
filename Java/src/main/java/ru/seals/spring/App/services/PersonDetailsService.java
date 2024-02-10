@@ -29,4 +29,9 @@ public class PersonDetailsService implements UserDetailsService {
 
         return new PersonDetails(person.get());
     }
+
+    public Person loadPersonByLogin(String login) {
+        Optional<Person> person = peopleRepository.findByLogin(login);
+        return person.orElseGet(person::get);
+    }
 }

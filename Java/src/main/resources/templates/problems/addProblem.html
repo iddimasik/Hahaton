@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=bde52139-d90a-4c75-9dce-5206156c28bd&lang=ru_RU" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+        ymaps.ready(init);
+        var myMap;
+
+        function init () {
+            myMap = new ymaps.Map("map", {
+                center: [47.2233, 39.7191],
+                zoom: 11
+            }, {
+                balloonMaxWidth: 200,
+                searchControlProvider: 'yandex#search'
+            });
+
+            myMap.events.add('click', function (e) {
+                if (!myMap.balloon.isOpen()) {
+                    var coords = e.get('coords');
+                    myMap.balloon.open(coords, {
+                        contentHeader:'Мусор здесь!',
+                        contentBody:'<p>Мусор.</p>' +
+                            '<p>Координаты мусора: ' + [
+                                coords[0].toPrecision(6),
+                                coords[1].toPrecision(6)
+                            ].join(', ') + '</p>',
+                        contentFooter:'<sup>Щелкните еще раз</sup>'
+                    });
+
+                    document.getElementById("latitude").value = coords[0];
+                    document.getElementById("longitude").value = coords[1];
+                }
+                else {
+                    myMap.balloon.close();
+                }
+            });
+
+
+            myMap.events.add('contextmenu', function (e) {
+                myMap.hint.open(e.get('coords'), 'Кто-то щелкнул правой кнопкой');
+            });
+
+
+            myMap.events.add('balloonopen', function (e) {
+                myMap.hint.close();
+            });
+        }
+    </script>
+</head>
+
+<body>
+<form th:method="POST" th:action="@{/problem/add}" th:object="${problem}">
+    <label for="title">Заголовок проблемы: </label>
+    <input type="text" th:field="*{title}" id="title">
+    <br>
+    <label for="textProblem">Описание проблемы: </label>
+    <input type="text" th:field="*{text}" id="textProblem">
+    <br>
+    <label for="region">Статус: </label>
+    <select name="region" id="region">
+        <option th:each="region : ${regions}" th:value="${region.getId()}" th:text="${region.getRegionName()}"></option>
+    </select>
+
+    <!-- Скрытые поля для хранения координат -->
+    <input type="hidden" name="latitude" id="latitude">
+    <input type="hidden" name="longitude" id="longitude">
+
+    <input type="submit" value="Отправить">
+</form>
+<h1>Выберите координаты на карте</h1>
+<div id="map" style="width: 600px; height: 400px"></div>
+</body>
+</html>

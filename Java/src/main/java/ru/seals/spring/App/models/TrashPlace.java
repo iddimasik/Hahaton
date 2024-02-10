@@ -5,6 +5,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "Pollution_Places")
@@ -24,17 +25,22 @@ public class TrashPlace {
     @Column(name = "problem_status")
     private String problemStatus;
 
-    @Column(name = "region_id")
-    private int regionId;
+    @ManyToOne
+    @JoinColumn(name = "region_id", referencedColumnName = "id")
+    private Regions region;
 
-    @Column(name = "user_id")
-    private int userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private Person person;
 
     @Column(name = "creation_date")
     private LocalDateTime date;
 
     @Column(name = "coordinates_xy")
     private String coordinates;
+
+    @OneToMany(mappedBy = "trashPlace")
+    private List<Images> trashPlaces;
 
     public int getId() {
         return id;
@@ -64,18 +70,20 @@ public class TrashPlace {
         this.problemStatus = problemStatus;
     }
 
-    public int getRegionId() {
-        return regionId;
-    }
-    public void setRegionId(int regionId) {
-        this.regionId = regionId;
+    public Regions getRegion() {
+        return region;
     }
 
-    public int getUserId() {
-        return userId;
+    public void setRegion(Regions region) {
+        this.region = region;
     }
-    public void setUserId(int userId) {
-        this.userId = userId;
+
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
     }
 
     public LocalDateTime getDate() {
@@ -90,5 +98,18 @@ public class TrashPlace {
     }
     public void setCoordinates(String coordinates) {
         this.coordinates = coordinates;
+    }
+
+    public List<Images> getTrashPlaces() {
+        return trashPlaces;
+    }
+
+    public void setTrashPlaces(List<Images> trashPlaces) {
+        this.trashPlaces = trashPlaces;
+    }
+
+    @Override
+    public String toString() {
+        return coordinates;
     }
 }

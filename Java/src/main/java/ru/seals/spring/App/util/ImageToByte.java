@@ -1,37 +1,45 @@
+package ru.seals.spring.App.util;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import ru.seals.spring.App.models.Images;
+import ru.seals.spring.App.models.TrashPlace;
+import ru.seals.spring.App.services.ImageService;
+
 import java.awt.image.BufferedImage;
 import java.io.*;
 import javax.imageio.ImageIO;
 import java.util.Base64;
 
+@Component
 public class ImageToByte {
-    public static void main(String[] args) throws IOException {
-        String imagePath = "example.jpg";
-        String textFilePath = "photo.txt";
 
-        //convertImageToBytesAndSave(imagePath, textFilePath);
-        convertBytesFromFileToImage(textFilePath, "resultImage.jpg");
+    private final ImageService imageService;
+
+    @Autowired
+    public ImageToByte(ImageService imageService) {
+        this.imageService = imageService;
     }
 
-    static void convertImageToBytesAndSave(String imagePath, String textFilePath) {
+
+    public void convertImageToBytesAndSave(String imagePath, TrashPlace trashPlace) {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             BufferedImage image = ImageIO.read(new File(imagePath));
             ImageIO.write(image, "jpg", baos);
             byte[] imageBytes = baos.toByteArray();
 
             String base64String = Base64.getEncoder().encodeToString(imageBytes);
-
-            try (FileWriter writer = new FileWriter(textFilePath)) {
-                writer.write(base64String);
-                System.out.println("Данные изображения успешно сохранены в файле: " + textFilePath);
-            } catch (IOException e) {
-                System.err.println("Ошибка при записи данных изображения в файл: " + e.getMessage());
-            }
+            Images images = new Images();
+            images.setImageData(base64String);
+            images.setTrashPlace(trashPlace);
+            imageService.save(images);
+            System.out.println("Сохранено");
         } catch (IOException e) {
             System.err.println("Ошибка при конвертации изображения в байты: " + e.getMessage());
         }
     }
 
-    static void convertBytesFromFileToImage(String textFilePath, String outputImagePath) {
+    public void convertBytesFromFileToImage(String textFilePath, String outputImagePath) {
         try (BufferedReader reader = new BufferedReader(new FileReader(textFilePath))) {
             StringBuilder stringBuilder = new StringBuilder();
             String line;

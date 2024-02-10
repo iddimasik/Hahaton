@@ -7,6 +7,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -49,6 +50,9 @@ public class Person {
 
     @Column(name = "role")
     private String role;
+
+    @OneToMany(mappedBy = "person")
+    private List<TrashPlace> trashPlaces;
 
     public int getId() {
         return id;
@@ -120,5 +124,13 @@ public class Person {
 
     public void setLogin(String login) {
         this.login = login;
+    }
+
+    public List<TrashPlace> getTrashPlaces() {
+        return trashPlaces;
+    }
+
+    public void setTrashPlaces(List<TrashPlace> trashPlaces) {
+        this.trashPlaces = trashPlaces;
     }
 }

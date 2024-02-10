@@ -3,38 +3,481 @@
 <head>
     <meta charset="UTF-8">
     <title>Registration</title>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
+
+<div class="content">
 <form th:method="POST" th:action="@{/auth/registration}" th:object="${person}">
+
+    <h1>Регистрация </h1>
+    <div class="container">
     <label for="login">Введите логин: </label>
     <input type="text" th:field="*{login}" id="login">
     <div style="color:red" th:if="${#fields.hasErrors('login')}" th:errors="*{login}">Login error</div>
+    </div>
     <br>
+    <div class="container">
     <label for="firstName">Введите имя: </label>
     <input type="text" th:field="*{firstName}" id="firstName">
     <div style="color:red" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">firstName error</div>
+    </div>
     <br>
+    <div class="container">
     <label for="lastName">Введите фамилию: </label>
-    <input type="text" th:field="*{lastName}" id="lastName">
+    <input type="text" th:field="*{lastName}" id="lastNamew ">
     <div style="color:red" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">lastName error</div>
+    </div>
     <br>
+    <div class="container">
     <label for="email">Введите email: </label>
     <input type="text" th:field="*{email}" id="email">
     <div style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error</div>
+    </div>
     <br>
+    <div class="container">
     <label for="password">Введите пароль: </label>
     <input type="password" th:field="*{password}" id="password">
     <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Year of birth error</div>
+    </div>
     <br>
+    <div class="container">
     <label for="phoneNumber">Введите номер телефона: </label>
     <input type="text" th:field="*{phoneNumber}" id="phoneNumber">
     <div style="color:red" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}">phoneNumber error</div>
+    </div>
     <br>
+    <div class="container">
     <label for="userStatus">Статус: </label>
     <select name="userStatus" id="userStatus">
         <option th:each="status : ${statusList}" th:value="${status}" th:text="${status}"></option>
     </select>
-    <input type="submit" value="Sign up!">
+    </div>
+    <div class="login-button">
+        <input type="submit" value="Login" class="log">
+    </div>
+    <div if="${param.error}" style="color: red" >
+        Имя пользователя уже существует
+    </div>
 </form>
+</div>
 </body>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat+Alternates&display=swap');
+
+    body {
+        font-family: 'Montserrat Alternates', sans-serif;
+        background-color: #ffffff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        color: #B9B4C7;
+        margin:0;
+        background-image: url('../img/back.png');
+        /* Other background properties for positioning and sizing */
+        background-size: cover; /* Adjusts the size of the background image to cover the entire container */
+        background-position: center; /* Centers the background image within the container */
+        background-repeat: no-repeat;
+    }
+    .mainMAin{
+        display: flex;
+        justify-content: space-between;
+        font-family: 'Montserrat Alternates', sans-serif;
+    }
+    span{
+        font-family: 'Montserrat Alternates', sans-serif;
+
+    }
+    .content{
+        padding: 30px;
+        background-color: #dceafc;
+        border-radius: 20px;
+        font-family: 'Montserrat Alternates', sans-serif;
+
+
+    }
+    .error-message {
+        font-family: 'Montserrat Alternates', sans-serif;
+
+        color: red;
+    }
+
+    .container {
+        display: flex; /* Используем flexbox для контейнера */
+        flex-direction: column; /* Устанавливаем направление в столбец */
+        width: 200px;
+
+    }
+
+    .form-label,
+    .form-input {
+        display: block; /* Располагаем элементы в столбик */
+        margin-bottom: 5px; /* Отступ между элементами */
+    }
+    .form-input{
+        width: 293px; /* Ширина input */
+        height: 38px; /* Высота input */
+        border-radius: 10px;
+        border: none;
+    }
+
+    .log{
+        width: 300px;
+        height: 52px;
+        background-color: #4c68af;
+        border: none;
+        border-radius: 10px;
+        font-size: 23px;
+        color: #0d110e;
+        margin-bottom: 20px;
+    }
+    h1{
+        margin-top:0px;
+        text-align: center;
+        color: #0d3115;
+    }
+    .login-button{
+    }
+    input[type=text]{
+        appearance: none;
+        border: none;
+        outline: none;
+        border-bottom: .2em solid #4b62ae;
+        background: #d6deee;
+        padding: .4em;
+        color: #4b5bae;
+    }
+
+    input[type=password]{
+        appearance: none;
+        border: none;
+        outline: none;
+        border-bottom: .2em solid #4b53ae;
+        background: #d6e0ee;
+        padding: .4em;
+        color: #c1cdee;
+    }
+    .form-label{
+        color: #0b2356;
+    }
+
+
+    .header {
+        display: flex;
+        padding: 0 2rem;
+        background-color: #151F7E;
+        width: 100%;
+        height: 4rem;
+        justify-content: space-between;
+
+    }
+
+    .logo {
+        font-size: 3rem;
+        font-weight: bold;
+        color: white;
+        padding: 0.5rem;
+    }
+
+    .actions {
+        display: flex;
+    }
+
+    button{
+        background: none;
+        border:none;
+        outline: none; /* Убирает обводку при фокусировке кнопки */
+
+    }
+
+    .icon {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+    .MainHead{
+        width: 100%;
+        display: flex;
+        position: fixed; /* Фиксированное позиционирование */
+        top: 0; /* Прикрепить к верху экрана */
+        left: 0; /* Прикрепить к левому краю экрана */
+    }
+    .container {
+        padding-top: 0.5rem;
+    }
+
+    .box {
+        margin-top: 5rem;
+        margin-left: 1rem;
+        width: 14rem;
+        height: 34rem;
+        border-radius: 0.5rem; /* rounded-lg */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #151F7E;
+        flex-direction: column;
+    }
+
+    .box button {
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
+
+    .icon {
+        width: 5rem;
+        height: 5rem;
+    }
+
+    .text {
+        font-size: 2rem;
+        margin-top: 0.5rem;
+        color: white;
+    }
+    .queue {
+        padding-top: 2rem;
+    }
+
+    .inner-container {
+        margin-top: 1rem;
+        width: 17rem;
+        height: 38rem;
+        border-radius: 0.5rem; /* rounded-lg */
+        display: flex;
+        background-color: #151F7E;
+        flex-direction: column;
+    }
+    h2{
+        font-size: 1rem;
+    }
+    .inner-container h1 {
+        color: white;
+        margin-top: 2rem;
+        font-size: 2rem;
+    }
+
+    .problems {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+        overflow-x: hidden;
+        overflow-y: auto; /* Добавляем вертикальную прокрутку, если необходимо */
+    }
+    .huhu{
+        display: flex;
+        flex-direction: row;
+        gap: 6rem;
+    }
+    .containerRight {
+        display: flex;
+        justify-content: center;
+        margin-left: 2rem;
+        margin-top: 5rem;
+    }
+
+    .card {
+        width: 15rem;
+        height: 34rem;
+        background-color: #151F7E;
+        border-radius: 0.5rem;
+        display: flex;
+        margin-top: 5rem;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .card-titleRight {
+        font-size: 1.5rem;
+        color: white;
+        margin-left: 0.5rem;
+    }
+    .sosi{
+        padding-left: 1rem;
+
+    }
+    .card-content {
+        margin-top: 1rem;
+    }
+
+    .infoRight {
+        display: flex;
+        flex-direction: column;
+        color: white;
+        margin-bottom: 0.5rem;
+    }
+
+    .info-label {
+        font-size: 1.3rem;
+    }
+
+    .info-value {
+        margin-top: 0.2rem;
+    }
+
+    .problems {
+        color: white;
+        margin-top: 0.5rem;
+    }
+
+    .problems-label {
+        font-size: 1.3rem;
+        align-items: center;
+    }
+    .problem-listAdmin {
+        overflow-y: auto;
+        overflow-x: hidden;
+        max-height: 40rem;
+        display: flex;
+        flex-direction: column;
+        gap:0.5rem;
+
+        -ms-overflow-style: none; /* Internet Explorer и Edge */
+        scrollbar-width: none; /* Firefox */
+    }
+
+    .problem-list {
+        overflow-y: auto;
+        overflow-x: hidden;
+        max-height: 15rem;
+        display: flex;
+        flex-direction: column;
+        gap:0.5rem;
+
+        -ms-overflow-style: none; /* Internet Explorer и Edge */
+        scrollbar-width: none; /* Firefox */
+    }
+    .desc{
+        display: flex;
+        gap: 0.5rem;
+    }
+    .containerProblem {
+        display: flex;
+        justify-content: center;
+        background-color: #D3EEFF;
+        border-radius: 1rem;
+        width: 14rem;
+
+    }
+
+    .itemProblem {
+
+    }
+
+    .cardProblem {
+        border-radius: 1rem;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0.4rem;
+    }
+
+    .heading {
+        color: black;
+        font-weight: bold;
+    }
+
+    .details {
+        margin-top: 0.5rem;
+        display: flex;
+        flex-direction: row;
+    }
+
+    .buttonProblem {
+        display: flex;
+        align-items: center;
+    }
+
+    .iconProblem {
+        width: 1.5rem;
+        height: 1.5rem;
+        margin-right: 1rem;
+    }
+
+    .region {
+        color: black;
+    }
+
+    .info {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-top: 0.5rem;
+    }
+
+    .date,
+    .name {
+        color: black;
+        margin-right: 0.5rem;
+    }
+
+    .status {
+        margin-top: 0.5rem;
+        color: black;
+    }
+
+    /**/
+    /**/.form-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+    .form {
+        width: 400px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group textarea {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+    }
+
+    .form-group textarea {
+        height: 100px;
+    }
+
+    .photo-upload label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .photo-upload input[type="file"] {
+        margin-bottom: 10px;
+    }
+
+    button[type="submit"] {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+
+</style>
 </html>

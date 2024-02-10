@@ -2,6 +2,7 @@ package ru.seals.spring.App.models;
 
 import ru.seals.spring.App.util.UserStatus;
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "Regions")
@@ -15,7 +16,8 @@ public class Regions {
     @Column(name = "region_name")
     private String regionName;
 
-
+    @OneToMany(mappedBy = "region")
+    private List<TrashPlace> trashPlaces;
     public int getId() {
         return id;
     }

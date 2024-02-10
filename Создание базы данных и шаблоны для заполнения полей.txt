@@ -1,0 +1,67 @@
+CREATE TABLE Users (
+    id SERIAL PRIMARY KEY,
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NOT NULL,
+    email VARCHAR(155) UNIQUE NOT NULL,
+    user_status VARCHAR(50) NOT NULL,
+    role VARCHAR(20) NOT NULL DEFAULT 'ROLE_USER',
+    phone_number VARCHAR(20) UNIQUE NOT NULL,
+    login VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE Regions (
+    id SERIAL PRIMARY KEY,
+    region_name VARCHAR(100) UNIQUE NOT NULL
+);
+
+CREATE TABLE Pollution_Places (
+    id SERIAL PRIMARY KEY,
+    problem_title VARCHAR(255) NOT NULL,
+    problem_text TEXT NOT NULL,
+    problem_status VARCHAR(100) NOT NULL,
+    region_id INT NOT NULL,
+    user_id INT NOT NULL,
+    creation_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    coordinates_xy VARCHAR(100) NOT NULL,
+    FOREIGN KEY (region_id) REFERENCES Regions(id),
+    FOREIGN KEY (user_id) REFERENCES Users(id)
+);
+
+CREATE TABLE Problem_Reviews (
+    id SERIAL PRIMARY KEY,
+    review_author VARCHAR(100) NOT NULL,
+    review_text TEXT NOT NULL,
+    creation_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    publication_status VARCHAR(50) NOT NULL,
+    pollution_place_id INT NOT NULL,
+    user_id INT NOT NULL,
+    FOREIGN KEY (pollution_place_id) REFERENCES Pollution_Places(id),
+    FOREIGN KEY (user_id) REFERENCES Users(id)
+);
+
+CREATE TABLE Images (
+    id SERIAL PRIMARY KEY,
+    image_data BYTEA NOT NULL,
+    pollution_place_id INT NOT NULL,
+    FOREIGN KEY (pollution_place_id) REFERENCES Pollution_Places(id)
+);
+
+INSERT INTO Regions (region_name) VALUES
+('Region 1'),
+('Region 2'),
+('Region 3'),
+('Region 4'),
+('Region 5');
+
+INSERT INTO Users (first_name, last_name, email, user_status, phone_number, login, password) VALUES
+('John', 'Doe', 'john@example.com', 'Местный житель', '123-456-7890', 'john_doe', 'password1'),
+('Jane', 'Smith', 'jane@example.com', 'Турист', '987-654-3210', 'jane_smith', 'password2'),
+('Michael', 'Johnson', 'michael@example.com', 'Экоактивист', '555-123-4567', 'michael_johnson', 'password3'),
+('Emily', 'Brown', 'emily@example.com', 'Сотрудник МСУ', '111-222-3333', 'emily_brown', 'password4'),
+('David', 'Jones', 'david@example.com', 'Оператор раздельного сбора мусора', '999-888-7777', 'david_jones', 'password5');
+
+INSERT INTO Pollution_Places (problem_title, problem_text, problem_status, region_id, user_id, coordinates_xy) VALUES
+('Pollution Problem 1', 'Description of Pollution Problem 1', 'Pending', 1, 1, '12.3456, 78.9101'),
+('Pollution Problem 2', 'Description of Pollution Problem 2', 'In Progress', 2, 2, '23.4567, 89.1011'),
+('Pollution Problem 3', 'Description of Pollution Problem 3', 'Resolved', 3, 3, '34.5678, 91.0112');

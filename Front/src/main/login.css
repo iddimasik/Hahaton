@@ -1,0 +1,80 @@
+body {
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: 'Poppins', sans-serif;
+    color: #B9B4C7;
+    margin:0;
+}
+
+.content{
+  padding: 30px;
+
+    background-color: #b9d6ec;
+    border-radius: 20px;
+
+}
+.error-message {
+    color: red;
+}
+
+.container {
+    display: flex; /* Используем flexbox для контейнера */
+    flex-direction: column; /* Устанавливаем направление в столбец */
+    width: 200px; /* Ширина контейнера (можете изменить на нужное значение) */
+    /* Дополнительные стили по желанию */
+}
+
+.form-label,
+.form-input {
+    display: block; /* Располагаем элементы в столбик */
+    margin-bottom: 5px; /* Отступ между элементами */
+}
+.form-input{
+    width: 293px; /* Ширина input */
+    height: 38px; /* Высота input */
+    border-radius: 10px;
+    border: none;
+}
+
+.log{
+    width: 300px;
+    height: 52px;
+    background-color: #D3EEFF;
+    border: none;
+    border-radius: 10px;
+    font-size: 23px;
+    color: #0d110e;
+    margin-bottom: 20px;
+}
+h1{
+    margin-top:0px;
+    text-align: center;
+    color: #0d3115;
+}
+.login-button{
+}
+input[type=text]{
+    appearance: none;
+    border: none;
+    outline: none;
+    border-bottom: .2em solid #357DAC;
+    background: #D3EEFF;
+    padding: .4em;
+    color: #357DAC;
+}
+
+input[type=password]{
+    appearance: none;
+    border: none;
+    outline: none;
+    border-bottom: .2em solid #357DAC;
+    background: #D3EEFF;
+    padding: .4em;
+    color: #87c1e3;
+}
+.form-label{
+    color: #151F7E;
+}

@@ -23,6 +23,11 @@ NEW_PROBLEM_TEXT: str = 'Объявить о новой проблеме'
 DATABASE = DataBase()
 
 
+def output_files(message):
+    print(DATA)
+    bot.register_next_step_handler(message, contact_handler)
+
+
 @bot.message_handler(commands=['start'])
 def start_message(message):
     """Функиця срабатывает при старте бота."""
@@ -44,7 +49,6 @@ def contact_handler(message):
     if user_id:
         message_to_chat = 'Вы аутентифицировались!'
         DATA['user_id'] = user_id
-        bot.send_message(message.chat.id, message_to_chat)
         markup = types.ReplyKeyboardMarkup()
         status = types.KeyboardButton(STATUS_TEXT)
         new_problem = types.KeyboardButton(NEW_PROBLEM_TEXT)
@@ -71,7 +75,8 @@ def on_click(message):
         bot.send_message(message.chat.id, message_to_chat)
     else:
         message_to_chat = 'Укажите заголовок проблемы'
-        bot.send_message(message.chat.id, message_to_chat)
+        keyboard_remove = types.ReplyKeyboardRemove()
+        bot.send_message(message.chat.id, message_to_chat, reply_markup=keyboard_remove)
         bot.register_next_step_handler(message, text_problem)
 
 
@@ -81,23 +86,26 @@ def text_problem(message):
     DATA['date'] = datetime.now()
     message_to_chat = 'Укажите текст проблемы'
     bot.send_message(message.chat.id, message_to_chat)
+    bot.register_next_step_handler(message, get_text)
+
+
+@bot.message_handler(func=lambda message: True)
+def get_text(message):
+    DATA['text'] = message.text
     bot.register_next_step_handler(message, photos_problem)
 
 
-@bot.message_handler(content_types=['photo'])
+@bot.message_handler(func=lambda message: True)
 def photos_problem(message):
-    DATA['text'] = message.text
     message_to_chat = 'Отправьте фотографии проблемы'
     bot.send_message(message.chat.id, message_to_chat)
-    for photo in message.photo:
-        file_id = photo.file_id
-        file_info = bot.get_file(file_id)
-        file_path = file_info.file_path
-        file_bytes = bot.download_file(file_path)
-        byte_array = bytearray(file_bytes)
-        with open('photo.txt', 'w') as file:
-            file.write(str(byte_array))
-        break
+    if message.photo:
+        for photo in message.photo:
+            file_id = photo.file_id
+            file_info = bot.get_file(file_id)
+            file_path = file_info.file_path
+            file_bytes = bot.download_file(file_path)
+            byte_array = bytearray(file_bytes)
     bot.register_next_step_handler(message, regions)
 
 
@@ -111,30 +119,51 @@ def regions(message):
         button = types.KeyboardButton(region_name)
         markup.add(button)
     bot.send_message(message.chat.id, message_to_chat, reply_markup=markup)
-    bot.register_next_step_handler(message, location)
+    bot.register_next_step_handler(message, region)
 
 
 @bot.message_handler(func=lambda message: True)
-def location(message):
+def region(message):
     regions = DATABASE.get_regions()
     region_index = None
     for region_id, region_name in regions:
         if message.text == region_name:
             region_index = region_id
+    if region_index is None:
+        bot.message_handler(
+            message.chat.id,
+            'Данного региона нет в нашей базе данных'
+        )
+        bot.register_next_step_handler(message, regions)
     DATA['region'] = region_index
+    keyboard_remove = types.ReplyKeyboardRemove()
     bot.send_message(
         message.chat.id,
-        'Отправьте геопозицию проблемы'
+        'Отправьте геопозицию проблемы',
+        reply_markup=keyboard_remove
     )
     bot.register_next_step_handler(message, location)
 
 
 @bot.message_handler(commands=['location'])
 def location(message):
+    message_to_chat = (
+        'Все данные приняты!'
+        ' Чтобы дальше взаимодействовать с ботом введите номер телефона:'
+    )
+    if not message.location:
+        bot.send_message(
+            message.chat.id,
+            'Ошибка: Вы не скинули геопозицию'
+        )
+        bot.register_next_step_handler(message, location)
+
     latitude = message.location.latitude
     longitude = message.location.longitude
     coords = f'{latitude}, {longitude}'
     DATA['coordinates'] = coords
+    bot.send_message(message.chat.id, message_to_chat)
+    output_files(message)
 
 
 bot.infinity_polling()

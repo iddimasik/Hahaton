@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import ru.seals.spring.App.models.Images;
 import ru.seals.spring.App.models.Person;
 import ru.seals.spring.App.models.TrashPlace;
 import ru.seals.spring.App.services.ImageService;
@@ -87,9 +88,9 @@ public class PlaceProblemController {
     }
 
     @GetMapping("/{id}")
-    public String view(@PathVariable("id") int id,Model model) {
+    public String view(@PathVariable("id") int id,Model model) throws IOException {
         model.addAttribute("problem",placeProblemService.findOne(id));
-        System.out.println(placeProblemService.findOne(id).getTrashPlaces());
+        model.addAttribute("image",imageToByte.convertBytesFromFileToImage(id));
         return "problems/view";
     }
 

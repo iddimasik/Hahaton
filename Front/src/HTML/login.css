@@ -334,6 +334,13 @@ h2{
     align-items: center;
     padding: 0.4rem;
 }
+.cardProblemAbout {
+    margin-top: 5rem;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    padding: 0.4rem;
+}
 
 .heading {
     color: black;
@@ -491,4 +498,50 @@ textarea#message{
     background: #79509a;
     margin-top: 5rem;
         margin-bottom: 5rem;
+}
+.about{
+    height: 10rem;
+    color: #0d110e;
+}
+.aboutText{
+    margin-top: 1rem;
+}
+.containerAbout{
+    flex-direction: row;
+    display: flex;
+    gap:3rem;
+}
+.photoBig{
+    background: #4b62ae;
+    width: 21.5rem;
+    height: 15rem;
+    margin-top: 6rem;
+}
+.PhotoContein{
+    display: flex;
+    flex-direction: column;
+    gap:0.5rem;
+}
+.conteinerSmal{
+    display: flex;
+    flex-direction: row;
+    gap:0.5rem;
+}
+.photo1{
+    width: 5rem;
+    height: 5rem;
+    background: #4b62ae;
+}
+.fin{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #cdccf1;
+    border-radius: 2rem;
+    padding: 0 3rem 0 3rem ;
+}
+.rowCTA{
+    display: flex;
+    flex-direction: row;
+    gap:1rem;
 }

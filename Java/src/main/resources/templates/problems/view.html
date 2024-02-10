@@ -19,6 +19,7 @@
     <input type="hidden" id="coordinates" th:value="${problem.getCoordinates()}">
     <h1>Координаты: </h1>
     <div id="map" style="width: 600px; height: 400px"></div>
+    <img th:src="'/img/resultImage' + ${problem.getId()} + '.jpg'" alt="icon" src="">
 </form>
 </body>
 <script type="text/javascript">

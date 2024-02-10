@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Проблемы</title>
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=bde52139-d90a-4c75-9dce-5206156c28bd&lang=ru_RU" type="text/javascript">
+    </script>
+
+</head>
+<body>
+<form th:object="${problem}">
+    <p th:text="${ 'Заголовок:' + problem.getTitle()}">Заголовок</p>
+    <p th:text="${ 'Описание проблемы:' + problem.getText()}">Заголовок</p>
+    <p th:text="${ 'Статус:' + problem.getProblemStatus()}">Заголовок</p>
+    <p th:text="${ 'Регион:' + problem.getRegion().getRegionName()}">Заголовок</p>
+    <p th:text="${ 'Кто добавил:' + problem.getPerson().getLogin()}">Заголовок</p>
+    <p th:text="${ 'Дата создания:' + problem.getDate().getDayOfMonth() + '.' + problem.getDate().getMonthValue() + '.' + problem.getDate().getYear()}">Заголовок</p>
+    <!-- Скрытые поля для хранения координат -->
+    <input type="hidden" id="coordinates" th:value="${problem.getCoordinates()}">
+    <h1>Координаты: </h1>
+    <div id="map" style="width: 600px; height: 400px"></div>
+</form>
+</body>
+<script type="text/javascript">
+    var coordinates = document.getElementById("coordinates").value;
+    var coordinatesArray = coordinates.split(" ");
+
+    var latitude = parseFloat(coordinatesArray[0]);
+    var longitude = parseFloat(coordinatesArray[1]);
+    ymaps.ready(init);
+    var myMap;
+
+    function init () {
+        myMap = new ymaps.Map("map", {
+            center: [latitude, longitude],
+            zoom: 11
+        }, {
+            searchControlProvider: 'yandex#search'
+        });
+
+        // Получаем координаты из модели и создаем метку на карте
+        var coords = [latitude, longitude];
+        var myPlacemark = new ymaps.Placemark(coords, {}, {
+            preset: 'islands#redDotIcon'
+        });
+        myMap.geoObjects.add(myPlacemark);
+    }
+</script>
+</html>

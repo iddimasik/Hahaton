@@ -53,7 +53,7 @@
 </head>
 
 <body>
-<form th:method="POST" th:action="@{/problem/add}" th:object="${problem}">
+<form th:method="POST" th:action="@{/problem/add}" th:object="${problem}" enctype="multipart/form-data">
     <label for="title">Заголовок проблемы: </label>
     <input type="text" th:field="*{title}" id="title">
     <br>
@@ -64,6 +64,9 @@
     <select name="region" id="region">
         <option th:each="region : ${regions}" th:value="${region.getId()}" th:text="${region.getRegionName()}"></option>
     </select>
+
+    <label for="photo">Фотография: </label>
+    <input type="file" name="photo" id="photo">
 
     <!-- Скрытые поля для хранения координат -->
     <input type="hidden" name="latitude" id="latitude">

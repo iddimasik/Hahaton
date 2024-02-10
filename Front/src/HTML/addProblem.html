@@ -37,18 +37,46 @@
             <div class="map"></div>
         </div>
         <div class="bottunCont">
-        <div class="container">
-            <input type="file" id="photo1" name="photo1" accept="image/*">
-        </div>
-        <div class="container">
-            <input type="file" id="photo2" name="photo2" accept="image/*">
-        </div>
-        <div class="container">
-            <input type="file" id="photo3" name="photo3" accept="image/*">
-        </div>
-        <div class="container">
-            <input type="file" id="photo4" name="photo4" accept="image/*">
-        </div>
+            <form method="post" enctype="multipart/form-data">
+                <div class="input-file-row">
+                    <label class="input-file">
+                        <input type="file" name="photo1" id="photo1" multiple>
+                        <span>Выберите файл</span>
+                    </label>
+                    <div class="input-file-list"></div>
+                </div>
+            </form>
+
+            <form method="post" enctype="multipart/form-data">
+                <div class="input-file-row">
+                    <label class="input-file">
+                        <input type="file" name="photo2" id="photo2" multiple>
+                        <span>Выберите файл</span>
+                    </label>
+                    <div class="input-file-list"></div>
+                </div>
+            </form>
+
+            <form method="post" enctype="multipart/form-data">
+                <div class="input-file-row">
+                    <label class="input-file">
+                        <input type="file" name="photo3" id="photo3" multiple>
+                        <span>Выберите файл</span>
+                    </label>
+                    <div class="input-file-list"></div>
+                </div>
+            </form>
+
+            <form method="post" enctype="multipart/form-data">
+                <div class="input-file-row">
+                    <label class="input-file">
+                        <input type="file" name="photo4" id="photo4" multiple>
+                        <span>Выберите файл</span>
+                    </label>
+                    <div class="input-file-list"></div>
+                </div>
+            </form>
+
         </div>
 
         <div class="login-button">
@@ -61,6 +89,38 @@
         </div>
     </form>
 
+
+    <script>
+
+        var dt = new DataTransfer();
+
+        $('.input-file input[type=file]').on('change', function(){
+            let $files_list = $(this).closest('.input-file').next();
+            $files_list.empty();
+
+            for(var i = 0; i < this.files.length; i++){
+                let new_file_input = '<div class="input-file-list-item">' +
+                    '<span class="input-file-list-name">' + this.files.item(i).name + '</span>' +
+                    '<a href="#" onclick="removeFilesItem(this); return false;" class="input-file-list-remove">x</a>' +
+                    '</div>';
+                $files_list.append(new_file_input);
+                dt.items.add(this.files.item(i));
+            };
+            this.files = dt.files;
+        });
+
+        function removeFilesItem(target){
+            let name = $(target).prev().text();
+            let input = $(target).closest('.input-file-row').find('input[type=file]');
+            $(target).closest('.input-file-list-item').remove();
+            for(let i = 0; i < dt.items.length; i++){
+                if(name === dt.items[i].getAsFile().name){
+                    dt.items.remove(i);
+                }
+            }
+            input[0].files = dt.files;
+        }
+    </script>
 </div>
 
 </body>

@@ -20,10 +20,14 @@ try:
 
     with connection.cursor() as cursor:
         cursor.execute(
-            """SELECT * FROM users;"""
+            """
+            SELECT id
+            FROM pollution_places
+            WHERE coordinates_xy = '47.271604 39.776809';
+            """
         )
         print('successfully get')
-        pprint(cursor.fetchall())
+        pprint(cursor.fetchall()[0][0])
 
 
 except Exception as error:

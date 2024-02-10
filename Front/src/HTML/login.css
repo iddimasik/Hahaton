@@ -385,3 +385,18 @@ textarea#message{
     display: flex;
     flex-direction: row;
 }
+.upLine{
+    display: flex;
+    flex-direction: row;
+    gap:10rem;
+    justify-content: center;
+    align-items: center;
+}
+.map{
+    height: 17rem;
+    width: 20rem;
+    background: #0d110e;
+}
+.continue{
+
+}

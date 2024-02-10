@@ -12,7 +12,9 @@
     <form name="f" method="post" action="/process_login" style="color: #B9B4C7">
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <h1>Проблема  </h1>
-
+        <div class="continue">
+        <div class="upLine">
+<div class="inputs">
         <div class="container">
             <label for="title" class="form-label">Заголовок: </label>
             <input type="text" name="username" id="title" class="form-input">
@@ -30,6 +32,10 @@
             <label for="message">Сообщение</label>
             <textarea id="message" name="message" rows="4" required></textarea>
         </div>
+        </div>
+<!--            место для карты -->
+            <div class="map"></div>
+        </div>
         <div class="bottunCont">
         <div class="container">
             <input type="file" id="photo1" name="photo1" accept="image/*">
@@ -44,12 +50,14 @@
             <input type="file" id="photo4" name="photo4" accept="image/*">
         </div>
         </div>
+
         <div class="login-button">
             <input type="submit" value="Создать" class="log">
         </div>
 
         <div if="${param.error}" style="color: red" >
-            Неправильные имя или пароль
+                ошибка
+        </div>
         </div>
     </form>
 

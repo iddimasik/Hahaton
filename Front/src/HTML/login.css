@@ -7,14 +7,17 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    /*height: 100vh;*/
     color: #B9B4C7;
     margin:0;
+    overflow: auto;
+    flex-direction: column;
     background-image: url('../img/back.png');
     /* Other background properties for positioning and sizing */
     background-size: cover; /* Adjusts the size of the background image to cover the entire container */
     background-position: center; /* Centers the background image within the container */
     background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 .mainMAin{
     display: flex;
@@ -308,6 +311,7 @@ h2{
 .desc{
     display: flex;
     gap: 0.5rem;
+    margin-top: 2rem;
 }
 .containerProblem {
     display: flex;
@@ -474,4 +478,17 @@ textarea#message{
     text-decoration: none;
     display: inline-block;
     margin-left: 5px;
+}
+
+.plusMap{
+    display: flex;
+    flex-direction: column;
+}
+.mapy{
+
+    width: 60rem;
+    height: 30rem;
+    background: #79509a;
+    margin-top: 5rem;
+        margin-bottom: 5rem;
 }

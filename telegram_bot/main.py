@@ -13,7 +13,7 @@ DATA = {
     'text': None,
     'photos': None,
     'region': None,
-    'user': None,
+    'user_id': None,
     'date': None,
     'coordinates': None,
 }
@@ -26,6 +26,7 @@ DATABASE = DataBase()
 @bot.message_handler(commands=['start'])
 def start_message(message):
     """Функиця срабатывает при старте бота."""
+
     message_to_chat = (
         'Привет, я Эко-Бот!\nТы можешь сообщить'
         ' о проблеме связанной с мусором на побережьях'
@@ -39,8 +40,10 @@ def start_message(message):
 
 @bot.message_handler(func=lambda message: True)
 def contact_handler(message):
-    if DATABASE.auth(message.text):
+    user_id = DATABASE.auth(message.text)
+    if user_id:
         message_to_chat = 'Вы аутентифицировались!'
+        DATA['user_id'] = user_id
         bot.send_message(message.chat.id, message_to_chat)
         markup = types.ReplyKeyboardMarkup()
         status = types.KeyboardButton(STATUS_TEXT)
@@ -52,6 +55,7 @@ def contact_handler(message):
         message_to_chat = (
             'Вашего номера нет в базе данных.'
             ' Вам необходимо пройти регистрацию на нашем сайте.'
+            ' После повторно напишите свой номер телефона.'
         )
         bot.send_message(message.chat.id, message_to_chat)
 
@@ -68,22 +72,69 @@ def on_click(message):
     else:
         message_to_chat = 'Укажите заголовок проблемы'
         bot.send_message(message.chat.id, message_to_chat)
-        bot.register_next_step_handler(message, after_title)
+        bot.register_next_step_handler(message, text_problem)
 
 
 @bot.message_handler(func=lambda message: True)
-def after_title(message):
+def text_problem(message):
     DATA['title'] = message.text
     DATA['date'] = datetime.now()
     message_to_chat = 'Укажите текст проблемы'
     bot.send_message(message.chat.id, message_to_chat)
-    bot.register_next_step_handler(message, after_text)
+    bot.register_next_step_handler(message, photos_problem)
+
+
+@bot.message_handler(content_types=['photo'])
+def photos_problem(message):
+    DATA['text'] = message.text
+    message_to_chat = 'Отправьте фотографии проблемы'
+    bot.send_message(message.chat.id, message_to_chat)
+    for photo in message.photo:
+        file_id = photo.file_id
+        file_info = bot.get_file(file_id)
+        file_path = file_info.file_path
+        file_bytes = bot.download_file(file_path)
+        byte_array = bytearray(file_bytes)
+        with open('photo.txt', 'w') as file:
+            file.write(str(byte_array))
+        break
+    bot.register_next_step_handler(message, regions)
+
+
+@bot.message_handler(commands=['region'])
+def regions(message):
+    DATA['text'] = message.text
+    regions = DATABASE.get_regions()
+    markup = types.ReplyKeyboardMarkup(row_width=1)
+    message_to_chat = 'Выберите регион'
+    for region_id, region_name in regions:
+        button = types.KeyboardButton(region_name)
+        markup.add(button)
+    bot.send_message(message.chat.id, message_to_chat, reply_markup=markup)
+    bot.register_next_step_handler(message, location)
 
 
 @bot.message_handler(func=lambda message: True)
-def after_text(message):
-    DATA['text'] = message.text
-    message_to_chat = ''
+def location(message):
+    regions = DATABASE.get_regions()
+    region_index = None
+    for region_id, region_name in regions:
+        if message.text == region_name:
+            region_index = region_id
+    DATA['region'] = region_index
+    bot.send_message(
+        message.chat.id,
+        'Отправьте геопозицию проблемы'
+    )
+    bot.register_next_step_handler(message, location)
+
+
+@bot.message_handler(commands=['location'])
+def location(message):
+    latitude = message.location.latitude
+    longitude = message.location.longitude
+    coords = f'{latitude}, {longitude}'
+    DATA['coordinates'] = coords
 
 
 bot.infinity_polling()

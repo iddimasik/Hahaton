@@ -1,4 +1,5 @@
 import psycopg2
+from pprint import pprint
 
 from config import db_name, host, password, user
 
@@ -16,30 +17,13 @@ try:
             'Select version();'
         )
         print(f'Server version {cursor.fetchone()}')
-    users = []
+
     with connection.cursor() as cursor:
         cursor.execute(
             """SELECT * FROM users;"""
         )
-        users_data = cursor.fetchall()
-        all_users = {}
-        user_data = {
-            'id': None,
-            'name': None,
-            'last_name': None,
-            'email': None,
-            'user_status': None,
-            'role': None,
-            'phone_number': None,
-            'login': None,
-            'password': None
-        }
-        for user in users_data:
-            for user_value in user:
-                for key, value in user_data.items():
-                    user_data[key] = user_value
-            all_users[user[0]] = user_data
-        print(all_users)
+        print('successfully get')
+        pprint(cursor.fetchall())
 
 
 except Exception as error:

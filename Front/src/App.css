@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+.Problems{
+-ms-overflow-style: none; /* Internet Explorer и Edge */
+scrollbar-width: none; /* Firefox */
+}

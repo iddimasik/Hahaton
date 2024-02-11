@@ -7,13 +7,11 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    /*height: 100vh;*/
     color: #B9B4C7;
     margin:0;
     overflow: auto;
     flex-direction: column;
     background-image: url('../img/back.png');
-    /* Other background properties for positioning and sizing */
     background-size: cover; /* Adjusts the size of the background image to cover the entire container */
     background-position: center; /* Centers the background image within the container */
     background-repeat: no-repeat;
@@ -26,7 +24,6 @@ body {
 }
 span{
     font-family: 'Montserrat Alternates', sans-serif;
-
 }
 .contentReg{
     padding: 30px;
@@ -41,21 +38,21 @@ span{
     background-color: #dceafc;
     border-radius: 20px;
     font-family: 'Montserrat Alternates', sans-serif;
-
 }
 .error-message {
     font-family: 'Montserrat Alternates', sans-serif;
-
     color: red;
 }
-
 .container {
     display: flex; /* Используем flexbox для контейнера */
     flex-direction: column; /* Устанавливаем направление в столбец */
     width: 200px;
-
 }
-
+.link-no-underline {
+    margin: 0.5rem 0 0.5rem;
+    text-decoration: none; /* Убираем подчеркивание */
+    color: white; /* Используем цвет текста по умолчанию */
+}
 .form-label,
 .form-input {
     display: block; /* Располагаем элементы в столбик */
@@ -77,7 +74,7 @@ select#region.form-input{
     background: #d6e0ee;
 }
 
-.log{
+.log, .logAbout{
     width: 300px;
     height: 52px;
     background-color: #4c68af;
@@ -86,18 +83,23 @@ select#region.form-input{
     font-size: 23px;
     color: white;
     margin-bottom: 20px;
+    align-items: center;
+    justify-content: center;
 }
+.logAbout{
+    padding-left: 5rem;
+}
+
 .log:hover{
     background-color: #28407c;
-
 }
+
 h1{
     margin-top:0px;
     text-align: center;
     color: #0d3115;
 }
-.login-button{
-}
+
 input[type=text]{
     appearance: none;
     border: none;
@@ -120,8 +122,6 @@ input[type=password]{
 .form-label{
     color: #0b2356;
 }
-
-
 .header {
      display: flex;
      padding: 0 2rem;
@@ -129,9 +129,7 @@ input[type=password]{
      width: 100%;
     height: 4rem;
     justify-content: space-between;
-
 }
-
 .logo {
     font-size: 3rem;
     font-weight: bold;
@@ -143,11 +141,10 @@ input[type=password]{
     display: flex;
 }
 
-button{
+button {
     background: none;
-    border:none;
-    outline: none; /* Убирает обводку при фокусировке кнопки */
-
+    border: none;
+    outline: none;
 }
 
 .icon {
@@ -164,7 +161,6 @@ width: 100%;
 .container {
     padding-top: 0.5rem;
 }
-
 .box {
     margin-top: 5rem;
     margin-left: 1rem;
@@ -255,7 +251,6 @@ h2{
 }
 .sosi{
     padding-left: 1rem;
-
 }
 .card-content {
     margin-top: 1rem;
@@ -280,7 +275,6 @@ h2{
     color: white;
     margin-top: 0.5rem;
 }
-
 .problems-label {
     font-size: 1.3rem;
     align-items: center;
@@ -292,7 +286,6 @@ h2{
     display: flex;
     flex-direction: column;
     gap:0.5rem;
-
     -ms-overflow-style: none; /* Internet Explorer и Edge */
     scrollbar-width: none; /* Firefox */
 }
@@ -304,7 +297,6 @@ h2{
     display: flex;
     flex-direction: column;
     gap:0.5rem;
-
     -ms-overflow-style: none; /* Internet Explorer и Edge */
     scrollbar-width: none; /* Firefox */
 }
@@ -319,13 +311,7 @@ h2{
     background-color: #D3EEFF;
     border-radius: 1rem;
     width: 14rem;
-
 }
-
-.itemProblem {
-
-}
-
 .cardProblem {
     border-radius: 1rem;
 
@@ -341,7 +327,6 @@ h2{
     flex-direction: column;
     padding: 0.4rem;
 }
-
 .heading {
     color: black;
     font-weight: bold;
@@ -352,18 +337,15 @@ h2{
     display: flex;
     flex-direction: row;
 }
-
 .buttonProblem {
     display: flex;
     align-items: center;
 }
-
 .iconProblem {
     width: 1.5rem;
     height: 1.5rem;
     margin-right: 1rem;
 }
-
 .region {
     color: black;
 }
@@ -374,19 +356,15 @@ h2{
     justify-content: space-between;
     margin-top: 0.5rem;
 }
-
 .date,
 .name {
     color: black;
     margin-right: 0.5rem;
 }
-
 .status {
     margin-top: 0.5rem;
     color: black;
 }
-
-/**/
 
 textarea#message{
     border: none; /* Убираем обводку */
@@ -416,7 +394,7 @@ textarea#message{
 }
 .map{
     height: 17rem;
-    width: 20rem;
+    width: 29rem;
     background: #0d110e;
 }
 .input-file-row {
@@ -455,12 +433,9 @@ textarea#message{
     height: 0;
 }
 
-/* Focus */
 .input-file input[type=file]:focus + span {
     box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
 }
-
-/* Hover/Active */
 .input-file:hover span {
     background-color: #5981be;
 }
@@ -468,12 +443,9 @@ textarea#message{
     background-color: #0b2356;
 }
 
-/* Disabled */
 .input-file input[type=file]:disabled + span {
     background-color: #eee;
 }
-
-/* Список файлов */
 .input-file-list {
     padding: 10px 0;
 }
@@ -492,7 +464,6 @@ textarea#message{
     flex-direction: column;
 }
 .mapy{
-
     width: 60rem;
     height: 30rem;
     background: #79509a;
@@ -511,16 +482,16 @@ textarea#message{
     display: flex;
     gap:3rem;
 }
-.photoBig{
+.photoBig1, .photoBig2{
     background: #4b62ae;
     width: 21.5rem;
-    height: 15rem;
-    margin-top: 6rem;
+    height: 12rem;
 }
 .PhotoContein{
     display: flex;
     flex-direction: column;
     gap:0.5rem;
+    margin: 6rem 0  2rem 0;
 }
 .conteinerSmal{
     display: flex;
@@ -544,4 +515,31 @@ textarea#message{
     display: flex;
     flex-direction: row;
     gap:1rem;
+}
+.modal-container {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+}
+
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.close-modal {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
 }

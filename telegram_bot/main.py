@@ -1,6 +1,6 @@
+import base64
 from datetime import datetime
 
-import base64
 import telebot
 from telebot import types
 
@@ -10,6 +10,7 @@ from DataBaseClass import DataBase
 BOT_TOKEN = '6687303614:AAE6oFosY9JKmCRcJYY4zg1kh3Gud9o2U_A'
 bot = telebot.TeleBot(token=BOT_TOKEN)
 
+# Словарь, в котором формируются данные для создания записи.
 DATA = {
     'problem_title': None,
     'problem_text': None,
@@ -23,6 +24,8 @@ DATA = {
 
 STATUS_TEXT: str = 'Узнать статус проблем'
 NEW_PROBLEM_TEXT: str = 'Объявить о новой проблеме'
+
+# Объект базы данных.
 DATABASE = DataBase()
 
 
@@ -41,6 +44,7 @@ def start_message(message):
 
 
 def auth_user(message):
+    """Фунция-проверка номера телефона в БД."""
     markup = types.ReplyKeyboardMarkup()
     status_button = types.KeyboardButton(STATUS_TEXT)
     new_problem_button = types.KeyboardButton(NEW_PROBLEM_TEXT)
@@ -76,9 +80,11 @@ def auth_user(message):
 
 
 def choice(message):
+    """Функция обработки выбора пользователя."""
     user_choice = message.text
     keyboard_remove = types.ReplyKeyboardRemove()
     if user_choice == STATUS_TEXT:
+        # Получение данных по id пользователя
         bot.send_message(
             message.chat.id,
             'Высылаю вам статусы проблем,'
@@ -103,6 +109,7 @@ def choice(message):
         bot.register_next_step_handler(message, auth_user)
 
     elif user_choice == NEW_PROBLEM_TEXT:
+        # Точка отправки на создание записи.
         bot.send_message(
             message.chat.id,
             'Введите заголовок проблемы:',
@@ -120,23 +127,27 @@ def choice(message):
 
 
 def get_title(message):
+    """Функция для получения заголовка проблемы."""
     title = message.text
     if title:
         DATA['problem_title'] = title
         bot.send_message(
             message.chat.id,
-            f'Спасибо, я сохранил ваш заголовок - {title}. Введите текст проблемы:'
+            f'Спасибо, я сохранил ваш заголовок'
+            f' - {title}. Введите текст проблемы:'
         )
         bot.register_next_step_handler(message, get_text)
     else:
         bot.send_message(
             message.chat.id,
-            'Произошла ошибка, возможно вы отправили пустую строку. Введите еще раз'
+            'Произошла ошибка, возможно вы'
+            ' отправили пустую строку. Введите еще раз'
         )
         bot.register_next_step_handler(message, get_title)
 
 
 def get_text(message):
+    """Функция для получения текста проблемы."""
     text = message.text
     if text:
         DATA['problem_text'] = text
@@ -155,6 +166,7 @@ def get_text(message):
 
 
 def get_photos(message):
+    """Функция для получения фотографии проблемы."""
     if message.photo and not isinstance(message.photo, str):
         for photo in message.photo:
             file_id = photo.file_id
@@ -185,6 +197,7 @@ def get_photos(message):
 
 
 def get_region(message):
+    """Функция для получения региона проблемы."""
     user_region = message.text
     regions = DATABASE.get_regions()
     region_index = None
@@ -214,6 +227,7 @@ def get_region(message):
 
 
 def get_location(message):
+    """Функция для получения геолокации проблемы."""
     if message.location:
         latitude = message.location.latitude
         longitude = message.location.longitude
@@ -228,6 +242,8 @@ def get_location(message):
             reply_markup=markup
         )
         DATA['creation_date'] = datetime.now()
+
+        # Вызов метода для записи полученных данных в БД.
         DATABASE.insert_data_in_db(DATA)
         bot.register_next_step_handler(message, auth_user)
     else:

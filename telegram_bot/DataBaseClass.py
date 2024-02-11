@@ -1,18 +1,20 @@
 import psycopg2
-from pprint import pprint
 
 from config import db_name, host, password, user
 
 
 class DataBase:
+    """Класс БД."""
 
     def __init__(self):
+        """Инициализация необходимых переменных для работы с БД."""
         self.user = user
         self.password = password
         self.host = host
         self.db_name = db_name
 
     def get_users(self):
+        """Метод для получения списка пользователей в БД."""
         try:
             connection = psycopg2.connect(
                 host=self.host,
@@ -53,6 +55,7 @@ class DataBase:
                 print('[DEBUG] Подключение успешно закрылось.')
 
     def auth(self, phone_number_from_telegram):
+        """Метод для проверки аутентификации пользователя."""
         all_users = self.get_users()
         flag = False
         for data_user in all_users.values():
@@ -61,6 +64,7 @@ class DataBase:
         return flag
 
     def get_regions(self):
+        """Метод для получения всех регионов из БД."""
         try:
             connection = psycopg2.connect(
                 host=self.host,
@@ -92,6 +96,7 @@ class DataBase:
                 print('[DEBUG] Подключение успешно закрылось.')
 
     def insert_data_in_db(self, data):
+        """Метод для записи данных, полученных через тг бота, в БД."""
         try:
             connection = psycopg2.connect(
                 host=self.host,
@@ -105,6 +110,8 @@ class DataBase:
             image_data['image_data'] = data.pop('image_data')
             date = {}
             date['creation_date'] = data['creation_date']
+
+            # Шаблон запроса на создание записи проблемы
             data_query_insert_problem = """
             INSERT INTO pollution_places (
             problem_title, problem_text,  problem_status,
@@ -114,11 +121,15 @@ class DataBase:
             %(problem_title)s, %(problem_text)s, %(problem_status)s,
             %(region_id)s, %(user_id)s, %(creation_date)s, %(coordinates_xy)s);
             """
+
+            # Шаблон запроса для получения id созданной записи.
             data_query_get_id = """
             SELECT id
             FROM pollution_places
             WHERE creation_date = %(creation_date)s;
             """
+
+            # Шаблон для создания записи фотографии проблемы.
             data_query_insert_photo = """
             INSERT INTO images (image_data, pollution_place_id)
             VALUES (%(image_data)s, %(pollution_place_id)s);
@@ -156,6 +167,7 @@ class DataBase:
                 print('[DEBUG] Подключение успешно закрылось.')
 
     def get_problem_dict(self, user_id):
+        """Метод для получения проблем пользователя по id."""
         try:
             connection = psycopg2.connect(
                 host=self.host,
@@ -166,6 +178,8 @@ class DataBase:
             connection.autocommit = True
 
             data_user = {'user_id': user_id}
+
+            # Шаблон для получения записей проблем по user_id
             query_to_get_user_problems = """
             SELECT problem_title, problem_status, creation_date, coordinates_xy
             FROM pollution_places

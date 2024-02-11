@@ -1,5 +1,7 @@
 import base64
+import io
 from datetime import datetime
+from PIL import Image
 
 import telebot
 from telebot import types
@@ -10,16 +12,11 @@ from DataBaseClass import DataBase
 BOT_TOKEN = '6687303614:AAE6oFosY9JKmCRcJYY4zg1kh3Gud9o2U_A'
 bot = telebot.TeleBot(token=BOT_TOKEN)
 
+authenticated = {}
+
 # Словарь, в котором формируются данные для создания записи.
 DATA = {
-    'problem_title': None,
-    'problem_text': None,
-    'problem_status': 'На рассмотрении',
-    'region_id': None,
-    'user_id': None,
-    'creation_date': None,
-    'coordinates_xy': None,
-    'image_data': None,
+
 }
 
 STATUS_TEXT: str = 'Узнать статус проблем'
@@ -49,19 +46,23 @@ def auth_user(message):
     status_button = types.KeyboardButton(STATUS_TEXT)
     new_problem_button = types.KeyboardButton(NEW_PROBLEM_TEXT)
     markup.row(status_button, new_problem_button)
+    print(message.chat.id)
 
-    if DATA['user_id'] is not None:
+    if message.chat.id in authenticated:
         bot.send_message(
             message.chat.id,
             'Выберете действие:',
             reply_markup=markup
         )
+        print(authenticated)
         bot.register_next_step_handler(message, choice)
     else:
         phone_number = message.text
         user_id = DATABASE.auth(phone_number)
         if user_id:
-            DATA['user_id'] = user_id
+            authenticated[message.chat.id] = user_id
+            DATA[message.chat.id] = {}
+            DATA[message.chat.id]['user_id'] = authenticated[message.chat.id]
             bot.send_message(
                 message.chat.id,
                 'Авторизация прошла успешно!'
@@ -90,7 +91,7 @@ def choice(message):
             'Высылаю вам статусы проблем,'
             ' которые были отправлены вами...',
         )
-        user_problems = DATABASE.get_problem_dict(DATA['user_id'])
+        user_problems = DATABASE.get_problem_dict(DATA[message.chat.id]['user_id'])
         for problem_num, problem_dict in user_problems.items():
             message_to_chat = (
                 f'{problem_num}) {problem_dict['problem_title']}\n'
@@ -130,7 +131,7 @@ def get_title(message):
     """Функция для получения заголовка проблемы."""
     title = message.text
     if title:
-        DATA['problem_title'] = title
+        DATA[message.chat.id]['problem_title'] = title
         bot.send_message(
             message.chat.id,
             f'Спасибо, я сохранил ваш заголовок'
@@ -150,7 +151,8 @@ def get_text(message):
     """Функция для получения текста проблемы."""
     text = message.text
     if text:
-        DATA['problem_text'] = text
+        DATA[message.chat.id]['problem_text'] = text
+        DATA[message.chat.id]['problem_status'] = 'На рассмотрении'
         bot.send_message(
             message.chat.id,
             'Текст проблемы сохранен. Отправьте фотографии,'
@@ -173,8 +175,15 @@ def get_photos(message):
             file_info = bot.get_file(file_id)
             file_path = file_info.file_path
             file_bytes = bot.download_file(file_path)
+            image = Image.open(io.BytesIO(file_bytes))
+            if image.format == 'JPEG':
+                print('JPEG')
+            if image.format == 'JPG':
+                print('JPG')
+            if image.format == 'PNG':
+                print('PNG')
             encoded_image = str(base64.b64encode(file_bytes))
-            DATA['image_data'] = encoded_image[2:len(encoded_image) - 1]
+            DATA[message.chat.id]['image_data'] = encoded_image[2:len(encoded_image) - 1]
         regions = DATABASE.get_regions()
         markup = types.ReplyKeyboardMarkup(row_width=1)
         for region_id, region_name in regions:
@@ -207,7 +216,7 @@ def get_region(message):
             region_index = region_id
 
     if region_index is not None:
-        DATA['region_id'] = region_index
+        DATA[message.chat.id]['region_id'] = region_index
         keyboard_remove = types.ReplyKeyboardRemove()
         bot.send_message(
             message.chat.id,
@@ -231,7 +240,7 @@ def get_location(message):
     if message.location:
         latitude = message.location.latitude
         longitude = message.location.longitude
-        DATA['coordinates_xy'] = f'{latitude} {longitude}'
+        DATA[message.chat.id]['coordinates_xy'] = f'{latitude} {longitude}'
         markup = types.ReplyKeyboardMarkup()
         success_button = types.KeyboardButton('Готово')
         markup.add(success_button)
@@ -241,10 +250,10 @@ def get_location(message):
             'Ваш запрос был направлен на рассмотренией администрацией.',
             reply_markup=markup
         )
-        DATA['creation_date'] = datetime.now()
+        DATA[message.chat.id]['creation_date'] = datetime.now()
 
         # Вызов метода для записи полученных данных в БД.
-        DATABASE.insert_data_in_db(DATA)
+        DATABASE.insert_data_in_db(DATA[message.chat.id])
         bot.register_next_step_handler(message, auth_user)
     else:
         bot.send_message(

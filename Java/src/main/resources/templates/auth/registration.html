@@ -29,7 +29,7 @@
     <br>
     <div class="container">
     <label for="lastName">Введите фамилию: </label>
-    <input type="text" th:field="*{lastName}" id="lastNamew ">
+    <input type="text" th:field="*{lastName}" id="lastName">
     <div style="color:red" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">lastName error</div>
     </div>
     <br>
@@ -60,7 +60,7 @@
     <div class="login-button">
         <input type="submit" value="Login" class="log">
     </div>
-    <div if="${param.error}" style="color: red" >
+    <div th:if="${param.error}" style="color: red" >
         Имя пользователя уже существует
     </div>
 </form>
@@ -79,7 +79,7 @@
         height: 100vh;
         color: #B9B4C7;
         margin:0;
-        background-image: url('../img/back.png');
+        background-image: url('/img/back.png');
         /* Other background properties for positioning and sizing */
         background-size: cover; /* Adjusts the size of the background image to cover the entire container */
         background-position: center; /* Centers the background image within the container */

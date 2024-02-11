@@ -3,24 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <title>Проблемы</title>
+    <link rel="stylesheet" href="../css/login.css">
     <script src="https://api-maps.yandex.ru/2.1/?apikey=bde52139-d90a-4c75-9dce-5206156c28bd&lang=ru_RU" type="text/javascript">
     </script>
 
 </head>
 <body>
-<form th:object="${problem}">
-    <p th:text="${ 'Заголовок:' + problem.getTitle()}">Заголовок</p>
-    <p th:text="${ 'Описание проблемы:' + problem.getText()}">Заголовок</p>
-    <p th:text="${ 'Статус:' + problem.getProblemStatus()}">Заголовок</p>
-    <p th:text="${ 'Регион:' + problem.getRegion().getRegionName()}">Заголовок</p>
-    <p th:text="${ 'Кто добавил:' + problem.getPerson().getLogin()}">Заголовок</p>
-    <p th:text="${ 'Дата создания:' + problem.getDate().getDayOfMonth() + '.' + problem.getDate().getMonthValue() + '.' + problem.getDate().getYear()}">Заголовок</p>
-    <!-- Скрытые поля для хранения координат -->
-    <input type="hidden" id="coordinates" th:value="${problem.getCoordinates()}">
-    <h1>Координаты: </h1>
-    <div id="map" style="width: 600px; height: 400px"></div>
-    <img th:src="'/img/resultImage' + ${problem.getId()} + '.jpg'" alt="icon" src="">
-</form>
+<!--<form th:object="${problem}">-->
+<!--    <p th:text="${ 'Заголовок:' + problem.getTitle()}">Заголовок</p>-->
+<!--    <p th:text="${ 'Описание проблемы:' + problem.getText()}">Заголовок</p>-->
+<!--    <p th:text="${ 'Статус:' + problem.getProblemStatus()}">Заголовок</p>-->
+<!--    <p th:text="${ 'Регион:' + problem.getRegion().getRegionName()}">Заголовок</p>-->
+<!--    <p th:text="${ 'Кто добавил:' + problem.getPerson().getLogin()}">Заголовок</p>-->
+<!--    <p th:text="${ 'Дата создания:' + problem.getDate().getDayOfMonth() + '.' + problem.getDate().getMonthValue() + '.' + problem.getDate().getYear()}">Заголовок</p>-->
+<!--    &lt;!&ndash; Скрытые поля для хранения координат &ndash;&gt;-->
+<!--    <input type="hidden" id="coordinates" th:value="${problem.getCoordinates()}">-->
+<!--    <h1>Координаты: </h1>-->
+<!--    <div id="map" style="width: 600px; height: 400px"></div>-->
+<!--    <img th:src="'/img/resultImage' + ${problem.getId()} + '.jpg'" alt="icon">-->
+<!--</form>-->
+<div class="fin">
+    <div class="containerAbout"  th:object="${problem}">
+        <input type="hidden" id="coordinates" th:value="${problem.getCoordinates()}">
+        <div class="cardProblemAbout">
+            <h1 class="heading" th:text="${problem.getTitle()}"></h1>
+
+            <div class="details">
+                <span class="region" th:text="${problem.getRegion().getRegionName()}"></span>
+            </div>
+            <div class="info">
+                <span class="date" th:text="${ 'Дата создания:' + problem.getDate().getDayOfMonth() + '.' + problem.getDate().getMonthValue() + '.' + problem.getDate().getYear()}"></span>
+                <span class="name" th:text="${ 'Кто добавил:' + problem.getPerson().getLogin()}"></span>
+            </div>
+            <span class="status" th:text="${problem.getProblemStatus()}"></span>
+            <div>
+                <h1 class="aboutText">Описание проблемы</h1>
+                <div class="about" th:text="${problem.getText()}"></div>
+            </div>
+        </div>
+
+        <div class="PhotoContein">
+            <div class="photoBig1" id="map"></div>
+            <div class="photoBig2" >
+                <img th:src="'/img/resultImage' + ${problem.getId()} + '.jpg'" width="345" height="200" id="photoBig2" alt="HTML5">
+            </div>
+
+        </div>
+    </div>
+    <form th:method="POST" th:action="@{/problem/edit/{id}(id=${problem.getId()})}">
+        <div class="rowCTA">
+
+            <div class="login-button">
+                <input type="submit" value="Удалить" class="log">
+            </div>
+            <div class="login-button">
+                <input type="submit" value="Изменить" class="log">
+            </div>
+            <div class="login-button">
+                <label>
+                    <select class="logAbout" name="userStatus" id="userStatus">
+                        <option th:value="'В очереди'">В Очередь</option>
+                        <option th:value="'В работе'">В Работу</option>
+                        <option th:value="'Завершено'">Завершено</option>
+                    </select>
+                </label>
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">const photoBig2 = document.getElementById('photoBig2');
+let isBig = false; // Переменная для хранения состояния фотографии (увеличена или нет)
+
+photoBig2.addEventListener('click', function() {
+    if (!isBig) { // Если фотография не увеличена
+        // Увеличиваем размер фотографии в photoBig2
+        photoBig2.style.transform = 'scale(2)'; // Увеличение в 2 раза
+        isBig = true; // Устанавливаем флаг, что фотография увеличена
+    } else { // Если фотография уже увеличена
+        // Сбрасываем увеличение размера фотографии в photoBig2
+        photoBig2.style.transform = 'scale(1)'; // Возвращаем исходный размер
+        isBig = false; // Сбрасываем флаг
+    }
+});</script>
 </body>
 <script type="text/javascript">
     var coordinates = document.getElementById("coordinates").value;

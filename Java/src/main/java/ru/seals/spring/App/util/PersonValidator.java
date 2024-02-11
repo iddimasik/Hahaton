@@ -33,6 +33,6 @@ public class PersonValidator implements Validator {
             return; // пользователь с таким именем не найден
         }
 
-        errors.rejectValue("username","","Человек с таким именем пользователя уже существует");
+        errors.rejectValue("login","","Человек с таким именем пользователя уже существует");
     }
 }

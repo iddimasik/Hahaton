@@ -1,24 +1,14 @@
-// Получаем ссылки на элементы
-const imagePopup = document.querySelector('.image-popup');
-const modalContainer = document.querySelector('.modal-container');
-const modalImage = document.getElementById('modal-image');
-const closeModal = document.querySelector('.close-modal');
+const photoBig2 = document.getElementById('photoBig2');
+let isBig = false; // Переменная для хранения состояния фотографии (увеличена или нет)
 
-// Добавляем обработчик события клика на элемент image-popup
-imagePopup.addEventListener('click', function() {
-    const imgSrc = this.querySelector('source').srcset; // Получаем источник изображения из тега source
-    const imgAlt = this.querySelector('img').alt; // Получаем атрибут alt изображения
-
-    // Устанавливаем свойства изображения в модальном окне
-    modalImage.src = imgSrc;
-    modalImage.alt = imgAlt;
-
-    // Показываем модальное окно
-    modalContainer.style.display = 'block';
-});
-
-// Добавляем обработчик события клика на элемент закрытия модального окна
-closeModal.addEventListener('click', function() {
-    // Скрываем модальное окно
-    modalContainer.style.display = 'none';
+photoBig2.addEventListener('click', function() {
+    if (!isBig) { // Если фотография не увеличена
+        // Увеличиваем размер фотографии в photoBig2
+        photoBig2.style.transform = 'scale(2)'; // Увеличение в 2 раза
+        isBig = true; // Устанавливаем флаг, что фотография увеличена
+    } else { // Если фотография уже увеличена
+        // Сбрасываем увеличение размера фотографии в photoBig2
+        photoBig2.style.transform = 'scale(1)'; // Возвращаем исходный размер
+        isBig = false; // Сбрасываем флаг
+    }
 });

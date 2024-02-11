@@ -543,3 +543,6 @@ textarea#message{
     right: 10px;
     cursor: pointer;
 }
+#photoBig2 {
+    transition: transform 0.5s ease; /* Добавляем плавную анимацию изменения свойства transform с продолжительностью 0.5 секунды */
+}

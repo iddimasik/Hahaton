@@ -30,10 +30,10 @@ DATABASE = DataBase()
 def start_message(message):
     """Функиця срабатывает при старте бота."""
     message_to_chat = (
-        'Привет, я Эко-Бот!\nТы можешь сообщить'
+        'Привет, я Эко-Бот!\n\nВы можете сообщить'
         ' о проблеме связанной с мусором на побережьях'
-        ' и мы решим ее.\nПеред использованием убедитесь, что'
-        ' ваш номер телефона зарегистрирован на нашем сайте!'
+        ' и мы решим ее.\n\nПеред использованием убедитесь, что'
+        ' ваш номер телефона зарегистрирован на нашем сайте!\n\n'
         ' Напишите свой номер телефона.'
     )
     bot.send_message(message.chat.id, message_to_chat)
@@ -119,7 +119,7 @@ def choice(message):
         bot.register_next_step_handler(message, get_title)
     else:
         bot.send_message(
-            message.chat_id,
+            message.chat.id,
             'Произошла ошибка: то значение,'
             ' которое вы выбрали - не существует!'
             ' Попробуйте снова.'
@@ -142,7 +142,7 @@ def get_title(message):
         bot.send_message(
             message.chat.id,
             'Произошла ошибка, возможно вы'
-            ' отправили пустую строку. Введите еще раз'
+            ' отправили пустую строку. Введите еще раз.'
         )
         bot.register_next_step_handler(message, get_title)
 
@@ -155,8 +155,8 @@ def get_text(message):
         DATA[message.chat.id]['problem_status'] = 'На рассмотрении'
         bot.send_message(
             message.chat.id,
-            'Текст проблемы сохранен. Отправьте фотографии,'
-            ' чтобы оценить масштабы вашей проблемы.'
+            'Текст проблемы сохранен. Отправьте фотографию,'
+            ' чтобы оценить масштабы загрязнения.'
         )
         bot.register_next_step_handler(message, get_photos)
     else:
@@ -191,7 +191,7 @@ def get_photos(message):
             markup.add(region_button)
         bot.send_message(
             message.chat.id,
-            'Ваши фотографии были успешно сохранены.'
+            'Ваша фотография была успешно сохранена.'
             ' Укажите регион, в котором находится проблема:',
             reply_markup=markup
         )
@@ -222,7 +222,11 @@ def get_region(message):
             message.chat.id,
             'Регион, в котором находиться'
             ' проблема, был успешно сохранен. Пришлите точную'
-            ' геопозицию, где находиться проблема',
+            ' геопозицию, где находится проблема.\n\n'
+            'ПРИМЕЧАНИЕ: Если вы используете нашего чат-бота на'
+            ' компьютре, то воспользуйтесь'
+            ' https://yandex.ru/maps/?ll=39.944896%2C46.825533&z=9.47'
+            ' и отправьте координаты места в чат.',
             reply_markup=keyboard_remove
         )
         bot.register_next_step_handler(message, get_location)
@@ -292,7 +296,8 @@ def get_location(message):
         else:
             bot.send_message(
                 message.chat.id,
-                'Введенные вами данные некорректны'
+                'Введенные вами данные некорректны.'
+                ' Возможно вы не указали координаты через запятую.'
             )
             bot.register_next_step_handler(message, get_location)
     else:

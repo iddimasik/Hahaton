@@ -51,7 +51,7 @@ CREATE TABLE Сleaning_day (
     id SERIAL PRIMARY KEY,
     clean_title VARCHAR(155) NOT NULL,
     clean_text TEXT NOT NULL,
-    creation_date TEXT NOT NULL,
+    day_date TEXT NOT NULL,
     count_people INT DEFAULT 0,
     pollution_place_id INT NOT NULL,
     FOREIGN KEY (pollution_place_id) REFERENCES Pollution_Places(id)

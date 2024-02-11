@@ -87,6 +87,14 @@ public class PlaceProblemController {
         return "redirect:/hello";
     }
 
+    @PostMapping("/edit/{id}")
+    public String editProblem(@ModelAttribute("problem") @Valid TrashPlace trashPlace,@PathVariable("id") int id, @RequestParam("userStatus") String status) {
+        TrashPlace tr = placeProblemService.findOne(id);
+        tr.setProblemStatus(status);
+        placeProblemService.save(tr);
+        return "redirect:/hello";
+    }
+
     @GetMapping("/{id}")
     public String view(@PathVariable("id") int id,Model model) throws IOException {
         model.addAttribute("problem",placeProblemService.findOne(id));

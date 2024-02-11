@@ -235,15 +235,30 @@ def get_region(message):
         bot.register_next_step_handler(message, get_region)
 
 
+def check_coords(coords):
+    flag = True
+    try:
+        coords = coords.replace(' ', '')
+        coords = coords.split(',')
+        if len(coords) != 2:
+            flag = False
+        coords = [float(element) for element in coords]
+    except ValueError:
+        flag = False
+    return flag
+
+
 def get_location(message):
     """Функция для получения геолокации проблемы."""
+    markup = types.ReplyKeyboardMarkup()
+    success_button = types.KeyboardButton('Готово')
+    markup.add(success_button)
+
     if message.location:
         latitude = message.location.latitude
         longitude = message.location.longitude
         DATA[message.chat.id]['coordinates_xy'] = f'{latitude} {longitude}'
-        markup = types.ReplyKeyboardMarkup()
-        success_button = types.KeyboardButton('Готово')
-        markup.add(success_button)
+
         bot.send_message(
             message.chat.id,
             'Геопозиция была успешно сохранена! '
@@ -255,6 +270,31 @@ def get_location(message):
         # Вызов метода для записи полученных данных в БД.
         DATABASE.insert_data_in_db(DATA[message.chat.id])
         bot.register_next_step_handler(message, auth_user)
+    elif isinstance(message.text, str):
+        coordinates = message.text
+        flag = check_coords(coordinates)
+
+        if flag:
+            coordinates = coordinates.replace(' ', '')
+            coordinates = coordinates.split(',')
+            DATA[message.chat.id]['coordinates_xy'] = coordinates[0] + ' ' + coordinates[1]
+            bot.send_message(
+                message.chat.id,
+                'Геопозиция была успешно сохранена! '
+                'Ваш запрос был направлен на рассмотренией администрацией.',
+                reply_markup=markup
+            )
+            DATA[message.chat.id]['creation_date'] = datetime.now()
+
+            # Вызов метода для записи полученных данных в БД.
+            DATABASE.insert_data_in_db(DATA[message.chat.id])
+            bot.register_next_step_handler(message, auth_user)
+        else:
+            bot.send_message(
+                message.chat.id,
+                'Введенные вами данные некорректны'
+            )
+            bot.register_next_step_handler(message, get_location)
     else:
         bot.send_message(
             message.chat.id,

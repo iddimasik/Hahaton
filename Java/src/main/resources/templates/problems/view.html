@@ -32,8 +32,8 @@
                 <span class="region" th:text="${problem.getRegion().getRegionName()}"></span>
             </div>
             <div class="info">
-                <span class="date" th:text="${ 'Дата создания:' + problem.getDate().getDayOfMonth() + '.' + problem.getDate().getMonthValue() + '.' + problem.getDate().getYear()}"></span>
-                <span class="name" th:text="${ 'Кто добавил:' + problem.getPerson().getLogin()}"></span>
+                <span class="date" th:text="${ 'Дата:' + problem.getDate().getDayOfMonth() + '.' + problem.getDate().getMonthValue() + '.' + problem.getDate().getYear()}"></span>
+                <span class="name" th:text="${ 'Автор:' + problem.getPerson().getLogin()}"></span>
             </div>
             <span class="status" th:text="${problem.getProblemStatus()}"></span>
             <div>

@@ -1,6 +1,8 @@
 package ru.seals.spring.App.models;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "cleaning_day")
@@ -22,6 +24,17 @@ public class CleaningDay {
     @ManyToOne
     @JoinColumn(name = "pollution_place_id", referencedColumnName = "id")
     private TrashPlace trashPlace;
+
+    @Column(name = "creation_date")
+    private String localDateTime;
+
+    public String getLocalDateTime() {
+        return localDateTime;
+    }
+
+    public void setLocalDateTime(String localDateTime) {
+        this.localDateTime = localDateTime;
+    }
 
     public int getId() {
         return id;

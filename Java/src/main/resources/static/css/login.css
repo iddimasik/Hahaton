@@ -352,7 +352,7 @@ h2{
 
 .info {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
     margin-top: 0.5rem;
 }
@@ -378,6 +378,7 @@ textarea#message{
     display: flex;
     flex-direction: column;
     align-items: center;
+
 }
 .bottunCont{
     display: flex;
@@ -391,6 +392,7 @@ textarea#message{
     gap:10rem;
     justify-content: center;
     align-items: center;
+    padding-right: 5rem;
 }
 .map{
     height: 17rem;

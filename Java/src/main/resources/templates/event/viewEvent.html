@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Запись на событие</title>
+    <link rel="stylesheet" href="../css/login.css">
+</head>
+<body>
+<div class="content">
+    <form  th:object="${events}" enctype="multipart/form-data" style="color: #B9B4C7">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        <h1>Запись на событие </h1>
+        <div class="problems" >
+            <div class="problem-listAdmin">
+                <div class="containerProblem"  th:each="event : ${events}">
+                    <div class="itemProblem">
+                        <div class="cardProblem">
+                            <span class="heading" th:text="${event.getCleanTitle()}"></span>
+
+                            <div class="details">
+                                <span class="region" th:text="${event.getTrashPlace().getRegion().getRegionName()}"></span>
+                            </div>
+                            <div class="info">
+                                            <span class="date" th:text="${event.getLocalDateTime()}"></span>
+                                <span class="name" th:text="${event.getTrashPlace().getTitle()}"></span>
+                            </div>
+                        </div>
+                        <br>
+                        <a style="text-decoration: none; padding: 0.5rem; background: #79509a; color: white; border-radius: 1rem;" th:href="@{/event/{id}(id=${event.getId()})}">
+                            Записаться
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

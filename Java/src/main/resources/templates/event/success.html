@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/login.css">
+    <title>Вы успешно записались</title>
+</head>
+<body>
+<div class="content">
+  <form  th:object="${event}" enctype="multipart/form-data" style="color: #B9B4C7">
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+    <h1>Вы успешно записались на событие</h1>
+    <span class="heading" th:text="${'Кол-во записанных людей:' + event.getCountPeople()}"></span>
+    <br>
+      <br>
+      <br>
+    <a href="http://localhost:8080/hello" style="text-decoration: none; padding: 0.5rem; background: #79509a; color: white; border-radius: 1rem;">Назад</a>
+  </form>
+</div>
+</body>
+</html>

@@ -54,30 +54,6 @@
 </head>
 
 <body>
-<!--<form th:method="POST" th:action="@{/problem/add}" th:object="${problem}" enctype="multipart/form-data">-->
-<!--    <label for="title">Заголовок проблемы: </label>-->
-<!--    <input type="text" th:field="*{title}" id="title">-->
-<!--    <br>-->
-<!--    <label for="textProblem">Описание проблемы: </label>-->
-<!--    <input type="text" th:field="*{text}" id="textProblem">-->
-<!--    <br>-->
-<!--    <label for="region">Статус: </label>-->
-<!--    <select name="region" id="region">-->
-<!--        <option th:each="region : ${regions}" th:value="${region.getId()}" th:text="${region.getRegionName()}"></option>-->
-<!--    </select>-->
-
-<!--    <label for="photo">Фотография: </label>-->
-<!--    <input type="file" name="photo" id="photo">-->
-
-<!--    &lt;!&ndash; Скрытые поля для хранения координат &ndash;&gt;-->
-<!--    <input type="hidden" name="latitude" id="latitude">-->
-<!--    <input type="hidden" name="longitude" id="longitude">-->
-
-<!--<input type="submit" value="Отправить">-->
-<!--</form>-->
-<!--<h1>Выберите координаты на карте</h1>-->
-<!--<div id="map" style="width: 600px; height: 400px"></div>-->
-
 <div class="content">
     <form th:method="POST" th:action="@{/problem/add}" th:object="${problem}" enctype="multipart/form-data" style="color: #B9B4C7">
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -115,36 +91,6 @@
                         <div class="input-file-list"></div>
                     </div>
                 </form>
-
-<!--                <form method="post" enctype="multipart/form-data">-->
-<!--                    <div class="input-file-row">-->
-<!--                        <label class="input-file">-->
-<!--                            <input type="file" name="photo2" id="photo2" multiple>-->
-<!--                            <span>Выберите файл</span>-->
-<!--                        </label>-->
-<!--                        <div class="input-file-list"></div>-->
-<!--                    </div>-->
-<!--                </form>-->
-
-<!--                <form method="post" enctype="multipart/form-data">-->
-<!--                    <div class="input-file-row">-->
-<!--                        <label class="input-file">-->
-<!--                            <input type="file" name="photo3" id="photo3" multiple>-->
-<!--                            <span>Выберите файл</span>-->
-<!--                        </label>-->
-<!--                        <div class="input-file-list"></div>-->
-<!--                    </div>-->
-<!--                </form>-->
-
-<!--                <form method="post" enctype="multipart/form-data">-->
-<!--                    <div class="input-file-row">-->
-<!--                        <label class="input-file">-->
-<!--                            <input type="file" name="photo4" id="photo4" multiple>-->
-<!--                            <span>Выберите файл</span>-->
-<!--                        </label>-->
-<!--                        <div class="input-file-list"></div>-->
-<!--                    </div>-->
-<!--                </form>-->
 
             </div>
 

@@ -277,7 +277,7 @@ def get_location(message):
         if flag:
             coordinates = coordinates.replace(' ', '')
             coordinates = coordinates.split(',')
-            DATA[message.chat.id]['coordinates_xy'] = coordinates[0] + ' ' + coordinates[1]
+            DATA[message.chat.id]['coordinates_xy'] = str(float(coordinates[0])) + ' ' + str(float(coordinates[1]))
             bot.send_message(
                 message.chat.id,
                 'Геопозиция была успешно сохранена! '

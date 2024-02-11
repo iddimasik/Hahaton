@@ -60,26 +60,26 @@
             <div class="queue">
                 <div class="inner-container">
                     <h1>В очереди</h1>
-                    <div class="problems">
-                        <!-- Вставьте сюда элементы с проблемами -->
-                        <div class="problem-list">
-                            <div class="containerProblem">
+                    <div class="problems" >
+                        <div class="problem-listAdmin">
+                            <div class="containerProblem" th:if="${problem.getProblemStatus().equals('В очереди')}" th:each="problem : ${problems}">
                                 <div class="itemProblem">
-                                    <div class="cardProblem" th:each="problem : ${problems}">
-                                        <span class="heading" ></span>
+                                    <div class="cardProblem">
+                                        <span class="heading" th:text="${problem.getTitle()}"></span>
 
                                         <div class="details">
-
-                                            <button class="buttonProblem">
-                                                <img class="iconProblem" src="../img/map.png" alt="icon">
-                                            </button>
-                                            <span class="region">Регион</span>
+                                            <a class="buttonProblem" th:href="@{/problem/{id}(id=${problem.getId()})}">
+                                                <img class="iconProblem" src="/img/map.png" alt="icon">
+                                            </a>
+                                            <span class="region" th:text="${problem.getRegion().getRegionName()}"></span>
                                         </div>
                                         <div class="info">
-                                            <span class="date">22.01.2024</span>
-                                            <span class="name">Иванов И.И.</span>
+                                            <span class="date" th:text="${problem.getDate().getDayOfMonth() +
+                                             '.' + problem.getDate().getMonth().getValue() +
+                                              '.' + problem.getDate().getYear()}"></span>
+                                            <span class="name" th:text="${problem.getPerson().getLastName() + ' ' + problem.getPerson().getFirstName()}"></span>
                                         </div>
-                                        <span class="status">Статус</span>
+                                        <span class="status" th:text="${problem.getProblemStatus()}"></span>
                                     </div>
                                 </div>
                             </div>
@@ -92,61 +92,58 @@
             <div class="queue">
                 <div class="inner-container">
                     <h1>В работе</h1>
-                    <div class="problems">
-                        <!-- Вставьте сюда элементы с проблемами -->
-                        <div class="containerProblem">
-                            <div class="itemProblem">
-                                <div class="cardProblem">
-                                    <span class="heading">Заголовок</span>
+                    <div class="problems" >
+                        <div class="problem-listAdmin">
+                            <div class="containerProblem" th:if="${problem.getProblemStatus().equals('В работе')}" th:each="problem : ${problems}">
+                                <div class="itemProblem">
+                                    <div class="cardProblem">
+                                        <span class="heading" th:text="${problem.getTitle()}"></span>
 
-                                    <div class="details">
-
-                                        <button class="buttonProblem">
-                                            <img class="iconProblem" src="../img/map.png" alt="icon">
-                                        </button>
-                                        <span class="region">Регион</span>
+                                        <div class="details">
+                                            <a class="buttonProblem" th:href="@{/problem/{id}(id=${problem.getId()})}">
+                                                <img class="iconProblem" src="/img/map.png" alt="icon">
+                                            </a>
+                                            <span class="region" th:text="${problem.getRegion().getRegionName()}"></span>
+                                        </div>
+                                        <div class="info">
+                                            <span class="date" th:text="${problem.getDate().getDayOfMonth() +
+                                             '.' + problem.getDate().getMonth().getValue() +
+                                              '.' + problem.getDate().getYear()}"></span>
+                                            <span class="name" th:text="${problem.getPerson().getLastName() + ' ' + problem.getPerson().getFirstName()}"></span>
+                                        </div>
+                                        <span class="status" th:text="${problem.getProblemStatus()}"></span>
                                     </div>
-                                    <div class="info">
-                                        <span class="date">22.01.2024</span>
-                                        <span class="name">Иванов И.И.</span>
-                                    </div>
-
-
-                                    <span class="status">Статус</span>
                                 </div>
                             </div>
-                        </div>
 
+                        </div>
                     </div>
                 </div>
             </div>
 
             <div class="queue">
                 <div class="inner-container">
-                    <h1>В завершено</h1>
+                    <h1>Завершено</h1>
                     <div class="problems">
-                        <!-- Вставьте сюда элементы с проблемами -->
-                        <div class="problem-list">
-                            <!-- Problem items go here -->
-                            <div class="containerProblem">
+                        <div class="problem-listAdmin">
+                            <div class="containerProblem" th:if="${problem.getProblemStatus().equals('Завершено')}" th:each="problem : ${problems}">
                                 <div class="itemProblem">
                                     <div class="cardProblem">
-                                        <span class="heading">Заголовок</span>
+                                        <span class="heading" th:text="${problem.getTitle()}"></span>
 
                                         <div class="details">
-
-                                            <button class="buttonProblem">
-                                                <img class="iconProblem" src="../img/map.png" alt="icon">
-                                            </button>
-                                            <span class="region">Регион</span>
+                                            <a class="buttonProblem" th:href="@{/problem/{id}(id=${problem.getId()})}">
+                                                <img class="iconProblem" src="/img/map.png" alt="icon">
+                                            </a>
+                                            <span class="region" th:text="${problem.getRegion().getRegionName()}"></span>
                                         </div>
                                         <div class="info">
-                                            <span class="date">22.01.2024</span>
-                                            <span class="name">Иванов И.И.</span>
+                                            <span class="date" th:text="${problem.getDate().getDayOfMonth() +
+                                             '.' + problem.getDate().getMonth().getValue() +
+                                              '.' + problem.getDate().getYear()}"></span>
+                                            <span class="name" th:text="${problem.getPerson().getLastName() + ' ' + problem.getPerson().getFirstName()}"></span>
                                         </div>
-
-
-                                        <span class="status">Статус</span>
+                                        <span class="status" th:text="${problem.getProblemStatus()}"></span>
                                     </div>
                                 </div>
                             </div>
@@ -161,18 +158,18 @@
             <div class="card">
                 <h2 class="card-titleRight">Личный кабинет</h2>
                 <div class="card-content">
-                    <div class="sosi">
+                    <div class="sosi" th:object="${person}">
                         <div class="infoRight">
-                            <span class="info-label">ФИО:</span>
-                            <span class="info-value">Иванов И.И.</span>
+                            <span class="info-label" th:text="'ФИО: '"></span>
+                            <span class="info-value" th:text="${person.getLastName() + ' ' + person.getFirstName()}"></span>
                         </div>
                         <div class="infoRight">
                             <span class="info-label">Контакты:</span>
-                            <span class="info-value">+79515288888</span>
+                            <span class="info-value"  th:text="${person.getPhoneNumber()}"></span>
                         </div>
                         <div class="infoRight">
                             <span class="info-label">Статус:</span>
-                            <span class="info-value">Активист</span>
+                            <span class="info-value"  th:text="${person.getUserStatus()}"></span>
                         </div>
                     </div>
 
@@ -188,7 +185,7 @@
                                         <div class="details">
 
                                             <button class="buttonProblem">
-                                                <img class="iconProblem" src="../img/map.png" alt="icon">
+                                                <img class="iconProblem" src="/img/map.png" alt="icon">
                                             </button>
                                             <span class="region">Регион</span>
                                         </div>

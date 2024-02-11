@@ -12,9 +12,11 @@
         <div class="header">
             <h1 class="logo">TeamSeal</h1>
             <div class="actions">
-                <button class="cher">
+                <form th:action="@{/event/viewEvent}" th:method="get" class="cher">
+                <button type="submit">
                     <img src="/img/ex.png" alt="icon" class="icony">
                 </button>
+                </form>
                 <form th:action="@{/logout}" th:method="post" class="cher">
                     <button type="submit" >
                         <img src="/img/exit.png" alt="icon" class="icony">
@@ -54,7 +56,7 @@
                     <span class="text">Добавить проблему</span>
                 </button>
             </form>
-            <form th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" th:action="@{/problem/addEvent}" method="GET">
+            <form th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" th:action="@{/event/addEvent}" method="GET">
                 <button>
                     <img src="/img/add.png" alt="icon" class="icon">
                     <span class="text">Добавить cобытие</span>
@@ -71,10 +73,10 @@
                             <div class="containerProblem" th:if="${problem.getProblemStatus().equals('В очереди')}" th:each="problem : ${problems}">
                                 <div class="itemProblem">
                                     <div class="cardProblem">
-                                        <span class="heading" th:text="${problem.getTitle()}"></span>
+                                        <a class="heading"  th:href="@{/problem/{id}(id=${problem.getId()})}" th:text="${problem.getTitle()}"></a>
 
                                         <div class="details">
-                                            <a class="buttonProblem" th:href="@{/problem/{id}(id=${problem.getId()})}">
+                                            <a class="buttonProblem" >
                                                 <img class="iconProblem" src="/img/map.png" alt="icon">
                                             </a>
                                             <span class="region" th:text="${problem.getRegion().getRegionName()}"></span>
@@ -85,7 +87,6 @@
                                               '.' + problem.getDate().getYear()}"></span>
                                             <span class="name" th:text="${problem.getPerson().getLastName() + ' ' + problem.getPerson().getFirstName()}"></span>
                                         </div>
-                                        <span class="status" th:text="${problem.getProblemStatus()}"></span>
                                     </div>
                                 </div>
                             </div>
@@ -103,7 +104,7 @@
                             <div class="containerProblem" th:if="${problem.getProblemStatus().equals('В работе')}" th:each="problem : ${problems}">
                                 <div class="itemProblem">
                                     <div class="cardProblem">
-                                        <span class="heading" th:text="${problem.getTitle()}"></span>
+                                        <a class="heading"  th:href="@{/problem/{id}(id=${problem.getId()})}" th:text="${problem.getTitle()}"></a>
 
                                         <div class="details">
                                             <a class="buttonProblem" th:href="@{/problem/{id}(id=${problem.getId()})}">
@@ -117,7 +118,6 @@
                                               '.' + problem.getDate().getYear()}"></span>
                                             <span class="name" th:text="${problem.getPerson().getLastName() + ' ' + problem.getPerson().getFirstName()}"></span>
                                         </div>
-                                        <span class="status" th:text="${problem.getProblemStatus()}"></span>
                                     </div>
                                 </div>
                             </div>
@@ -135,7 +135,7 @@
                             <div class="containerProblem" th:if="${problem.getProblemStatus().equals('Завершено')}" th:each="problem : ${problems}">
                                 <div class="itemProblem">
                                     <div class="cardProblem">
-                                        <span class="heading" th:text="${problem.getTitle()}"></span>
+                                        <a class="heading"  th:href="@{/problem/{id}(id=${problem.getId()})}" th:text="${problem.getTitle()}"></a>
 
                                         <div class="details">
                                             <a class="buttonProblem" th:href="@{/problem/{id}(id=${problem.getId()})}">
@@ -149,7 +149,6 @@
                                               '.' + problem.getDate().getYear()}"></span>
                                             <span class="name" th:text="${problem.getPerson().getLastName() + ' ' + problem.getPerson().getFirstName()}"></span>
                                         </div>
-                                        <span class="status" th:text="${problem.getProblemStatus()}"></span>
                                     </div>
                                 </div>
                             </div>
@@ -185,7 +184,7 @@
                             <div class="containerProblem" th:if="${problem.getPerson().getId() == person.getId()}" th:each="problem : ${problems}">
                                 <div class="itemProblem">
                                     <div class="cardProblem">
-                                        <span class="heading" th:text="${problem.getTitle()}"></span>
+                                        <a class="heading"  th:href="@{/problem/{id}(id=${problem.getId()})}" th:text="${problem.getTitle()}"></a>
 
                                         <div class="details">
 
@@ -224,7 +223,7 @@
                         <div class="containerProblem" th:if="${problem.getProblemStatus().equals('На рассмотрении')}" th:each="problem : ${problems}">
                             <div class="itemProblem">
                                 <div class="cardProblem">
-                                    <span class="heading" th:text="${problem.getTitle()}"></span>
+                                    <a class="heading"  th:href="@{/problem/{id}(id=${problem.getId()})}" th:text="${problem.getTitle()}"></a>
 
                                     <div class="details">
 
@@ -282,7 +281,7 @@
             var longitude = parseFloat(coords[1]);
 
             // Создаем маркер для текущей точки
-            var marker = new ymaps.Placemark([latitude, longitude], {}, { preset: 'islands#dotIcon' });
+            var marker = new ymaps.Placemark([latitude, longitude], {balloonContent: '<strong>Мусор тут</strong>'}, { preset: 'islands#dotIcon' });
             myMap.geoObjects.add(marker);
         });
     }
